@@ -19,7 +19,7 @@ Harnes/
 ├── MIGRATION.md            # migration log: what was taken, what was not, and why
 ├── PLUGINS.md              # DSH plugin reference: name and purpose
 ├── shared/                 # true for both backend and frontend
-│   ├── skills/             # 26 skills: engineering discipline, review, domain, writing
+│   ├── skills/             # 26 skills; a vendored one carries SOURCE.md next to SKILL.md
 │   └── README.md
 ├── backend/                # .NET: architecture, data, API, tests, toolchain
 │   ├── principles/         # engineering principles (reference)
@@ -29,7 +29,7 @@ Harnes/
 │   └── README.md
 ├── frontend/               # React + TypeScript: structure, data, UI, quality
 │   ├── principles/
-│   ├── skills/             # 5 skills: vercel-labs/agent-skills (React, UI, writing)
+│   ├── skills/             # 16 skills: vercel-labs (React) + jakubkrehel (interface quality)
 │   ├── templates/
 │   ├── sources.md
 │   └── README.md
@@ -83,6 +83,45 @@ Harnes/
   data only; rules and skills live in the base (sections) or in the project (`.dsh/`).
   Configuring an environment through `~/.dsh/skills` is unnecessary.
 
+## How DSH sees the skills
+
+DSH reads exactly one level (`skills/<name>/SKILL.md`) and loads a skill in two steps: the
+`description` (with `whenToUse` when the skill has one) enters the session catalog, and only
+the skill a task actually needs is read in full. A section of forty skills therefore costs
+forty short lines until one of them is used.
+
+Two frontmatter keys decide who can reach a skill:
+
+| Frontmatter | Effect |
+|---|---|
+| neither key | The model sees the skill in the catalog and may invoke it on its own |
+| `disable-model-invocation: true` | The skill is absent from the catalog and from the `skill` tool; a person opens it with `/name` |
+
+In `shared/skills` **14 of 26 skills are user-invoked** — the whole Matt Pocock pipeline among
+them. The list is in `shared/README.md`. This matters when a project expects the agent to run a
+flow by itself: an agent-first harness gets the 12 model-invoked skills, and the pipeline
+starts when a person types the command.
+
+**Vocabulary of the source.** A vendored skill is not edited, so it speaks the vocabulary of
+the tool it was written for: "the Skill tool" is DSH's `skill` tool, `/clear` and `/compact`
+are context commands of the host, `/name` is a user-invoked skill. Read them as host concepts,
+not as literals.
+
+**The base's own `.dsh/`.** This repository runs on a hand-picked subset of its own sections
+placed in `.dsh/skills` (7 skills). That directory is a local build, not a source: `.dsh/` is
+git-ignored by decision, and the sections stay the single source of truth. Rebuild it after a
+section changes:
+
+```powershell
+.\scripts\install-skills.ps1 -Project . -Set shared,backend `
+  -Only architecture-drift-check,codebase-design,domain-modeling,karpathy-guidelines,research,sqlserver-index-verification,writing-for-agents
+```
+
+**Where provenance lives.** A vendored skill carries `SOURCE.md` next to `SKILL.md`; in the base
+it points at the section manifest `../SOURCES.json` for the per-file hashes. The manifest and
+`verify-set.cmd` stay in the base — `install-skills.ps1` copies skill folders only, so a project
+receives the provenance record, not the checker.
+
 ## Checking the base
 
 ```powershell
@@ -97,6 +136,9 @@ It checks the properties that make DSH skip a skill without a word: a present `S
 frontmatter with `name` and `description`, the name matching the folder, unquoted colons
 inside a value, broken relative links. The vendored set in `shared/skills` is additionally
 checked for integrity: `shared\skills\verify-set.cmd` compares SHA-256 against its manifest.
+That manifest lists upstream files only — a `SOURCE.md` next to a skill is this base's own
+provenance record and is skipped by the comparison. Neither script looks at `.dsh/skills`,
+which is a local build of the sections; rebuild it and compare, as above.
 
 ## Environment notes
 
