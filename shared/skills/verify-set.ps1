@@ -1,6 +1,10 @@
-﻿# Verifies the vendored skill set in this project against SOURCES.json.
+# Verifies the vendored skill set in this project against SOURCES.json.
 #   powershell -ExecutionPolicy Bypass -File .dsh/skills/verify-set.ps1
 #   powershell -ExecutionPolicy Bypass -File .dsh/skills/verify-set.ps1 -CheckUpstream
+#
+# The manifest holds upstream files only. SOURCE.md next to a skill is our provenance record
+# and is skipped by the hash comparison, so it neither has to be in the manifest nor counts
+# as an extra file.
 #
 # Exit code: 0 = in sync, 1 = drift found.
 
@@ -41,10 +45,12 @@ foreach ($skill in $manifest.skills) {
     }
     if (-not $descLine) { $problems += "$($skill.name): frontmatter has no description" }
 
-    # File hashes recorded in the manifest.
+    # File hashes recorded in the manifest. SOURCE.md is our own provenance record, not an
+    # upstream file: it is never listed in the manifest and must not count as an extra file.
     $actual = @{}
     foreach ($file in (Get-ChildItem -Recurse -File $skillPath)) {
         $rel = $file.FullName.Substring($skillPath.Length + 1).Replace('\', '/')
+        if ($rel -eq 'SOURCE.md') { continue }
         $actual[$rel] = (Get-FileHash -Algorithm SHA256 $file.FullName).Hash.ToLower()
     }
     foreach ($rel in $skill.sha256.PSObject.Properties.Name) {

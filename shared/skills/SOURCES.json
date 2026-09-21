@@ -1,13 +1,16 @@
-﻿{
+{
     "repository":  "mattpocock/skills",
     "ref":  "main",
     "commit":  "c55ee46073ed923f86ce59a5eb3b6d895095d1b7",
+    "commitDate":  "2026-09-18",
     "plugin":  "mattpocock-skills",
     "version":  "1.2.3",
+    "versionNote":  "package.json at the pinned commit still declares 1.2.3, but this commit is on main AFTER the v1.2.3 tag and is not the tag: the tag points at a different tree. Checked by size against both trees - ask-matt 11417 here vs 11491 at the tag, wait-what 394 here vs 325 at the tag. The pin is therefore 'main past v1.2.3', and the sha256 map below is the real guarantee, not the version string.",
     "license":  "MIT",
     "fetchedAt":  "2026-09-21",
     "sourceOfTruth":  "the list of skills is taken from the upstream .claude-plugin/plugin.json",
     "installedVia":  "manual copying of skill folders from the tarball (without .git and without npx skills)",
+    "provenance":  "a SOURCE.md sits next to every skill in this set; it records the same repository, path, commit, date and licence, and points back at this manifest for the hashes",
     "skills":  [
                    {
                        "name":  "ask-matt",
