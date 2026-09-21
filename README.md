@@ -18,6 +18,7 @@ Harnes/
 ├── AGENTS.md               # how to work with the base
 ├── MIGRATION.md            # migration log: what was taken, what was not, and why
 ├── PLUGINS.md              # DSH plugin reference: name and purpose
+├── DEPLOY.md               # prompt to paste into a project: adopt this base there
 ├── shared/                 # true for both backend and frontend
 │   ├── skills/             # 26 skills; a vendored one carries SOURCE.md next to SKILL.md
 │   └── README.md
@@ -40,6 +41,10 @@ Harnes/
 ```
 
 ## Deploying a project harness
+
+`DEPLOY.md` is this procedure as a prompt: paste it into a session opened on the target project
+and the agent reads the base, lays the skills out and drafts the project files. The steps below
+are the same thing by hand.
 
 1. Copy the sections the project needs: `backend/` for the server side, `frontend/` for the
    client side, `shared/` in both cases.

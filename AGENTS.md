@@ -8,6 +8,7 @@
 | Task | Read |
 |---|---|
 | Understand the base and how to deploy it | `README.md` |
+| Adopt the base into a new project | `DEPLOY.md` |
 | Set up a .NET project harness | `backend/README.md`, `backend/principles/*` |
 | Set up a React project harness | `frontend/README.md`, `frontend/principles/*` |
 | Add or fix a skill | `shared/README.md`, `sources.md` of the section |
@@ -29,6 +30,10 @@
   block with a reason and a date.
 - **Skills are not nested.** DSH reads `<root>/<name>/SKILL.md` and nothing deeper;
   a project gets its flat layout from `scripts/install-skills.ps1`.
+- **The base is edited on purpose or not at all.** A session opened on a target project reads
+  the base and never writes to it. Changes here happen in a session opened on the base itself,
+  with the user saying that is what is being done. On any disagreement between a project and the
+  base, the base wins on rules and the project wins on its own facts.
 
 ## Skill format
 
