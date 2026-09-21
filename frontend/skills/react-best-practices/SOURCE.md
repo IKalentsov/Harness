@@ -1,18 +1,18 @@
-# Источник скилла: react-best-practices
+# Skill source: react-best-practices
 
-- **Репозиторий:** [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills)
-- **Путь в репозитории:** `skills/react-best-practices/`
-- **Ветка:** `main`
-- **Коммит:** `063bee94c3f4df8453406c830b0a7df0f2860278` (28.08.2026, «Merge pull request #328 … Update React View Transitions guidance and troubleshooting»)
-- **Дата получения:** 2026-09-21
-- **Лицензия:** MIT (указана в README репозитория и в поле `license` файла `SKILL.md`; отдельного файла `LICENSE` в корне репозитория нет)
-- **Способ получения:** `web_fetch` + `write`; каждый файл сверен с git-blob-SHA1 из GitHub API. Файлы `SKILL.md`, `README.md`, `metadata.json` и `rules/**` получены без правок — размер и SHA-1 совпали побайтово.
+- **Repository:** [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills)
+- **Path in the repository:** `skills/react-best-practices/`
+- **Branch:** `main`
+- **Commit:** `063bee94c3f4df8453406c830b0a7df0f2860278` (28.08.2026, "Merge pull request #328 … Update React View Transitions guidance and troubleshooting")
+- **Retrieved:** 2026-09-21
+- **Licence:** MIT (stated in the repository README and in the `license` field of `SKILL.md`; there is no separate `LICENSE` file in the repository root)
+- **Retrieval method:** `web_fetch` + `write`; every file was verified against the git-blob-SHA1 from the GitHub API. The files `SKILL.md`, `README.md`, `metadata.json` and `rules/**` were retrieved without edits — size and SHA-1 matched byte for byte.
 
-## Что вендорено
+## What was vendored
 
-75 файлов, 122 122 байта.
+75 files, 122,122 bytes.
 
-| Файл | Байт |
+| File | Bytes |
 |---|---|
 | `SKILL.md` | 7251 |
 | `README.md` | 3360 |
@@ -90,15 +90,15 @@
 | `rules/server-parallel-nested-fetching.md` | 992 |
 | `rules/server-serialization.md` | 996 |
 
-## Не вендорено
+## Not vendored
 
-- Бинарных и не-текстовых файлов внутри скилла нет.
-- `AGENTS.md` — скомпилированная версия тех же правил (`SKILL.md` + `rules/**` одной сборкой, 108 261 байт), не вендорена: дублирует `rules/`, доступна по источнику
+- There are no binary or non-text files inside the skill.
+- `AGENTS.md` — a compiled version of the same rules (`SKILL.md` + `rules/**` in a single build, 108,261 bytes), not vendored: it duplicates `rules/` and is available at the source
   <https://raw.githubusercontent.com/vercel-labs/agent-skills/main/skills/react-best-practices/AGENTS.md>.
 
-## Замечания
+## Notes
 
-- `SKILL.md` и frontmatter не правились: поле `name` равно `vercel-react-best-practices` и не совпадает с именем каталога `react-best-practices` (так в источнике). `scripts/verify-library.ps1` из-за этого сообщает `frontmatter name does not match the folder`.
-- `SKILL.md` в разделе «Full Compiled Document» ссылается на `AGENTS.md`, который намеренно не вендорен (см. выше).
+- `SKILL.md` and the frontmatter were not edited: the `name` field is `vercel-react-best-practices` and does not match the directory name `react-best-practices` (that is how it is in the source). Because of this, `scripts/verify-library.ps1` reports `frontmatter name does not match the folder`.
+- In the "Full Compiled Document" section, `SKILL.md` refers to `AGENTS.md`, which is deliberately not vendored (see above).
 
-Локальная копия, автообновления нет: при изменениях у источника обновлять вручную.
+Local copy, no auto-update: refresh by hand when the source changes.

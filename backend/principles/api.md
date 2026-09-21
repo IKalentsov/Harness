@@ -1,39 +1,39 @@
-# API и внешние интеграции
+# API and external integrations
 
-## HTTP-контракт
+## HTTP contract
 
-- **Контроллер тонкий:** валидация входа → вызов сценария → маппинг результата в HTTP-ответ.
-  Бизнес-логики в контроллере нет.
-- **Контракты — отдельные DTO**, а не доменные сущности: домен наружу не течёт.
-- **Единый формат ошибок** (ProblemDetails или один тип ответа об ошибке); «голых» 500
-  и стектрейсов наружу нет.
-- **Версионирование с первого дня:** префикс `/api/v{n}`.
-- **Документация — из кода:** OpenAPI генерируется, интерактивная страница (Scalar или
-  аналог) доступна в dev-окружении.
-- **Health-checks разделены:** `/health/live` — процесс жив; `/health/ready` — готов
-  обслуживать (БД, кэш, внешние зависимости).
-- **Correlation ID** принимается из заголовка или генерируется, попадает во все логи
-  и в ответ.
+- **A thin controller:** validate input → call the use case → map the result to an HTTP
+  response. No business logic in the controller.
+- **Contracts are separate DTOs**, not domain entities: the domain does not leak outward.
+- **One error shape** (ProblemDetails or a single error response type); no bare 500s and no
+  stack traces on the wire.
+- **Versioning from day one:** the `/api/v{n}` prefix.
+- **Documentation comes from the code:** OpenAPI is generated, and an interactive page
+  (Scalar or an equivalent) is available in the development environment.
+- **Health checks are split:** `/health/live` — the process is alive; `/health/ready` — it can
+  serve traffic (database, cache, external dependencies).
+- **A correlation ID** is taken from the header or generated, and reaches every log line and
+  the response.
 
-## Внешние вызовы
+## Outbound calls
 
-- Только через фабрику HTTP-клиентов и типизированные клиенты; базовые адреса и ключи —
-  из конфигурации, не из кода.
-- Обязательны: таймаут, ретраи с backoff и jitter, размыкатель цепи, ограничение
-  параллелизма и уважение лимитов внешней площадки.
-- **Сырой ответ внешнего API не течёт в домен.** Сначала маппинг в собственную модель,
-  затем валидация, затем логирование факта и результата.
-- Парсинг и скрейпинг — отдельный слой с фикстурами в тестах.
-- **Секреты внешних API** — только через переменные окружения или user-secrets;
-  в `appsettings.json` — пустые заглушки.
-- Ошибка внешнего вызова не пробрасывается исключением через слои: инфраструктура ловит
-  конкретные исключения и возвращает типизированную ошибку.
+- Only through an HTTP client factory and typed clients; base addresses and keys come from
+  configuration, never from code.
+- Mandatory: a timeout, retries with backoff and jitter, a circuit breaker, a concurrency
+  limit and respect for the remote side's rate limits.
+- **A raw external response never reaches the domain.** It is first mapped into our own model,
+  then validated, then logged as a fact and a result.
+- Parsing and scraping live in their own layer, with fixtures in tests.
+- **External API secrets** come from environment variables or user secrets only; in
+  `appsettings.json` there are empty placeholders.
+- An external failure does not travel through the layers as an exception: infrastructure
+  catches the concrete exceptions and returns a typed error.
 
-## Границы ответственности
+## Responsibility boundaries
 
-| Слой | Что делает | Чего не делает |
+| Layer | Does | Does not |
 |---|---|---|
-| Контроллер | Принимает запрос, валидирует формат, отдаёт ответ | Не содержит правил домена |
-| Сценарий | Оркестрирует домен и инфраструктуру, держит транзакцию | Не знает про HTTP |
-| Домен | Правила и инварианты | Не знает про БД, сеть, DI |
-| Инфраструктура | Реализует абстракции, гасит исключения внешнего мира | Не принимает бизнес-решений |
+| Controller | Accepts the request, validates the shape, returns a response | Hold domain rules |
+| Use case | Orchestrates domain and infrastructure, owns the transaction | Know about HTTP |
+| Domain | Rules and invariants | Know about a database, the network or DI |
+| Infrastructure | Implements abstractions, absorbs the outside world's exceptions | Make business decisions |

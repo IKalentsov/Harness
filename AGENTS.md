@@ -1,49 +1,50 @@
-# AGENTS.md — работа с базой харнесса
+# AGENTS.md — working with the harness base
 
-> Это база знаний, а не проект. Здесь не выполняют сборку, тесты и не ведут состояние
-> проекта. Задача базы — отдать готовые разделы, из которых собирается харнесс проекта.
+> This is a knowledge base, not a project: no builds, no tests, no project state.
+> Its job is to hand out ready-made sections that a project harness is assembled from.
 
-## Что читать под задачу
+## What to read per task
 
-| Задача | Читать |
+| Task | Read |
 |---|---|
-| Понять устройство базы и порядок развёртывания | `README.md` |
-| Развернуть окружение под .NET-проект | `backend/README.md`, `backend/principles/*` |
-| Развернуть окружение под React-проект | `frontend/README.md`, `frontend/principles/*` |
-| Добавить или поправить скилл | `shared/README.md`, `sources.md` нужного раздела |
-| Понять, откуда взят официальный скилл | `backend/sources.md`, `frontend/sources.md`, `SOURCE.md` рядом со скиллом |
-| Справочник плагинов DSH | `PLUGINS.md` |
-| Проверить библиотеку целиком | `scripts/verify-library.ps1` |
+| Understand the base and how to deploy it | `README.md` |
+| Set up a .NET project harness | `backend/README.md`, `backend/principles/*` |
+| Set up a React project harness | `frontend/README.md`, `frontend/principles/*` |
+| Add or fix a skill | `shared/README.md`, `sources.md` of the section |
+| Trace where a vendored skill came from | `backend/sources.md`, `frontend/sources.md`, `SOURCE.md` next to the skill |
+| Look up a DSH plugin | `PLUGINS.md` |
+| Check the whole library | `scripts/verify-library.ps1` |
 
-## Границы
+## Boundaries
 
-- **Один смысл — одно место.** Новый скилл или принцип кладётся ровно в один раздел;
-  дублировать его в другой раздел нельзя — сослаться.
-- **Раздел выбирается по знанию, а не по вкусу.** Правило, которое знает про слои, EF Core,
-  ASP.NET, миграции, — `backend/`. Правило, которое знает про React, браузер, вёрстку,
-  доступность, — `frontend/`. Правило, которое верно в обоих стеках, — `shared/`.
-- **Проектная специфика в базу не попадает:** роли и модели, цикл задач, `ai-tasks`,
-  отчёты, ревью микро-задач, пути конкретных проектов, имена решений и таблиц.
-- **Скиллы из официальных источников не переписываются под себя.** Их вендорят копией,
-  а в шапку добавляют источник и дату получения. Адаптация допустима только явным блоком
-  отклонения с причиной и датой.
-- **Скиллы из разделов не разносятся по подпапкам.** DSH читает `<root>/<name>/SKILL.md`
-  и ничего глубже; раскладку в проект делает `scripts/install-skills.ps1`.
+- **One meaning, one place.** A skill or principle lives in exactly one section; pointing at
+  it from another section is fine, copying it is not.
+- **The section is chosen by knowledge, not by taste.** Rules about layers, EF Core, ASP.NET
+  and migrations go to `backend/`. Rules about React, the browser, layout and accessibility
+  go to `frontend/`. Rules true for both stacks go to `shared/`.
+- **Project specifics stay out of the base:** roles and models, task cycles, `ai-tasks`,
+  reports, micro-task reviews, paths of concrete projects, solution and table names.
+- **Official skills are vendored, not rewritten.** Copy them as they are and record the
+  source and date in `SOURCE.md`. Adapting the text is allowed only as an explicit deviation
+  block with a reason and a date.
+- **Skills are not nested.** DSH reads `<root>/<name>/SKILL.md` and nothing deeper;
+  a project gets its flat layout from `scripts/install-skills.ps1`.
 
-## Формат скилла
+## Skill format
 
 ```
-<раздел>/skills/<kebab-case-имя>/SKILL.md
+<section>/skills/<kebab-case-name>/SKILL.md
 ```
 
-- имя каталога = поле `name`, оба kebab-case;
-- `description` и `whenToUse` — по-русски, что скилл делает и когда вызывается.
-  У **вендоренных** скиллов frontmatter остаётся как в источнике, включая английский:
-  перевод — это правка официального текста;
-- двоеточие внутри `description`/`whenToUse` — только в кавычках: незакавыченный
-  `USE WHEN:` ломает YAML-frontmatter, и провайдер молча пропускает файл;
-- ресурсы скилла (references, скрипты) — внутри его каталога, ссылки относительные;
-- рядом с вендоренным скиллом лежит `SOURCE.md`: репозиторий, путь, ветка или коммит,
-  дата получения, лицензия, нескачанные файлы. Сам `SKILL.md` при вендоринге не правится.
-- проверка перед сдачей: `scripts/verify-library.ps1` — frontmatter, имя, кавычки,
-  относительные ссылки.
+- the directory name equals the `name` field, both kebab-case;
+- `description` and `whenToUse` state what the skill does and when it is invoked.
+  **Vendored** skills keep the frontmatter of their source, in its original language:
+  translating it would edit the official text;
+- a colon inside `description` or `whenToUse` is allowed only inside quotes — an unquoted
+  `USE WHEN:` breaks the YAML frontmatter and the provider skips the file without a word;
+- a skill's resources (references, scripts) live inside its own directory and are linked
+  relatively;
+- every vendored skill carries a `SOURCE.md` next to it: repository, path, branch or commit,
+  retrieval date, licence, files that were skipped. `SKILL.md` itself is never edited;
+- run `scripts/verify-library.ps1` before handing work over: it checks frontmatter, names,
+  quoting and relative links.

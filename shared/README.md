@@ -1,32 +1,31 @@
-# shared — общий раздел
+# shared — common section
 
-Скиллы и правила, которые верны в любом стеке: дисциплина разработки, ревью, работа
-с доменом, отладка, писательство для агентов. Раздел попадает в окружение и бэкенда,
-и фронтенда.
+Skills and rules that hold in any stack: engineering discipline, review, domain work,
+debugging, writing for agents. The section goes into both a backend and a frontend harness.
 
-## Что здесь
+## What is here
 
-| Путь | Что это |
+| Path | What it is |
 |---|---|
-| `skills/` | 26 скиллов: 24 из [mattpocock/skills](https://github.com/mattpocock/skills) + `karpathy-guidelines` + `architecture-drift-check` |
+| `skills/` | 26 skills: 24 from [mattpocock/skills](https://github.com/mattpocock/skills) + `karpathy-guidelines` + `architecture-drift-check` |
 
-Источник, версия и хеши вендоренного набора — `skills/SOURCES.json`.
-Проверка целостности — `skills/verify-set.cmd` (запускать из каталога `skills`).
-Верификатор покрывает 24 скилла из манифеста; `karpathy-guidelines` и
-`architecture-drift-check` лежат рядом как отдельные записи и проверяются вручную.
-Формальные признаки всех скиллов раздела проверяет `scripts/verify-library.ps1`.
+Source, version and hashes of the vendored set — `skills/SOURCES.json`.
+Integrity check — `skills/verify-set.cmd` (run it from the `skills` directory).
+The verifier covers the 24 skills in the manifest; `karpathy-guidelines` and
+`architecture-drift-check` sit next to them as separate entries and are checked by hand.
+Formal properties of every skill in the section are checked by `scripts/verify-library.ps1`.
 
-## Что берут из раздела
+## What is taken from the section
 
-- **Дисциплина кода:** `karpathy-guidelines`, `codebase-design`, `tdd`, `prototype`.
-- **Понимание задачи:** `domain-modeling`, `grilling`, `research`, `wayfinder`.
-- **Качество сдачи:** `code-review`, `diagnosing-bugs`, `resolving-merge-conflicts`,
+- **Code discipline:** `karpathy-guidelines`, `codebase-design`, `tdd`, `prototype`.
+- **Understanding the task:** `domain-modeling`, `grilling`, `research`, `wayfinder`.
+- **Quality of delivery:** `code-review`, `diagnosing-bugs`, `resolving-merge-conflicts`,
   `architecture-drift-check`.
-- **Документы для агентов:** `writing-for-agents`, `handoff`, `teach`.
+- **Documents for agents:** `writing-for-agents`, `handoff`, `teach`.
 
-## Что сюда не кладут
+## What does not go here
 
-- Всё, что знает про конкретный стек: EF Core, ASP.NET, React, браузер, вёрстку —
-  это `backend/` и `frontend/`.
-- Роли и процесс проекта: постановки для исполнителя, ревью микро-задач, `ai-tasks`,
-  циклы «архитектор → исполнитель». Это `.dsh/AGENTS.md` проекта.
+- Anything that knows a concrete stack — EF Core, ASP.NET, React, the browser, layout:
+  that is `backend/` and `frontend/`.
+- Roles and project process: briefs for an executor, micro-task reviews, `ai-tasks`,
+  "architect → executor" cycles. That is the project's own `.dsh/AGENTS.md`.

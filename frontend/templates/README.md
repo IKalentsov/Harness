@@ -1,30 +1,30 @@
-# Шаблоны фронтенда
+# Frontend templates
 
-Каталог для заготовок конфигов монорепо: базовый `tsconfig`, плоский конфиг ESLint,
-настройки форматирования, корневой `package.json` со скриптами.
+A directory for monorepo config blanks: the base `tsconfig`, a flat ESLint config,
+formatting settings, the root `package.json` with scripts.
 
-**Сейчас каталог пуст намеренно.** Ни в одном проекте пользователя фронтенд-код ещё
-не начат, поэтому здесь нечего вендорить: сочинённые «на глаз» версии и правила
-разошлись бы с реальностью на первом же `pnpm install`.
+**For now the directory is intentionally empty.** In none of the user's projects has
+frontend code been started yet, so there is nothing to vendor here: versions and rules
+invented "by eye" would diverge from reality at the very first `pnpm install`.
 
-## Что сюда положить, когда появится первый фронтенд-проект
+## What to put here once the first frontend project appears
 
-| Файл | Откуда взять |
+| File | Where to take it from |
 |---|---|
-| `tsconfig.base.json` + `packages/tsconfig/*` | Из первого рабочего монорепо, после того как типы и пути устоялись |
-| `eslint.config.js` (flat) + `packages/eslint-config/*` | Оттуда же; правила — из `principles/stack-and-structure.md` (запрет импортов между фичами, запрет barrel-файлов) |
-| `.prettierrc`, `.editorconfig` | Оттуда же |
-| `package.json` (корневой, со скриптами) | Оттуда же: `dev`, `build`, `lint`, `typecheck`, `test`, `api:generate` |
-| `pnpm-workspace.yaml` | Оттуда же |
+| `tsconfig.base.json` + `packages/tsconfig/*` | From the first working monorepo, after the types and paths have settled |
+| `eslint.config.js` (flat) + `packages/eslint-config/*` | From there as well; the rules — from `principles/stack-and-structure.md` (no imports between features, no barrel files) |
+| `.prettierrc`, `.editorconfig` | From there as well |
+| `package.json` (root, with scripts) | From there as well: `dev`, `build`, `lint`, `typecheck`, `test`, `api:generate` |
+| `pnpm-workspace.yaml` | From there as well |
 
-## Порядок вендоринга
+## Order of vendoring
 
-1. Взять файлы из **работающего** проекта — только так версии и правила проверены.
-2. Убрать проектную специфику: имена пакетов, домены, пути приложений.
-3. Положить сюда и зафиксировать источник и дату в шапке файла или в этом README.
-4. Не подставлять версии «по памяти»: диапазоны и `latest` запрещены.
+1. Take the files from a **working** project — that is the only way versions and rules are verified.
+2. Remove project specifics: package names, domains, application paths.
+3. Put them here and record the source and the date in the file header or in this README.
+4. Do not substitute versions "from memory": ranges and `latest` are forbidden.
 
-## Ориентиры стека
+## Stack guidelines
 
-Ориентировочный состав стека и правила размещения кода — `principles/stack-and-structure.md`.
-Официальные наборы скиллов по React и TypeScript — `sources.md`.
+The approximate composition of the stack and the code placement rules — `principles/stack-and-structure.md`.
+Official skill sets for React and TypeScript — `sources.md`.

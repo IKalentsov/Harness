@@ -1,18 +1,18 @@
-# Источник скилла: composition-patterns
+# Skill source: composition-patterns
 
-- **Репозиторий:** [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills)
-- **Путь в репозитории:** `skills/composition-patterns/`
-- **Ветка:** `main`
-- **Коммит:** `063bee94c3f4df8453406c830b0a7df0f2860278` (28.08.2026)
-- **Дата получения:** 2026-09-21
-- **Лицензия:** MIT (указана в README репозитория и в поле `license` файла `SKILL.md`; отдельного файла `LICENSE` в корне репозитория нет)
-- **Способ получения:** `web_fetch` + `write`; каждый файл сверен с git-blob-SHA1 из GitHub API — размер и SHA-1 совпали побайтово.
+- **Repository:** [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills)
+- **Path in the repository:** `skills/composition-patterns/`
+- **Branch:** `main`
+- **Commit:** `063bee94c3f4df8453406c830b0a7df0f2860278` (28.08.2026)
+- **Retrieved:** 2026-09-21
+- **Licence:** MIT (stated in the repository README and in the `license` field of `SKILL.md`; there is no separate `LICENSE` file in the repository root)
+- **Retrieval method:** `web_fetch` + `write`; every file was verified against the git-blob-SHA1 from the GitHub API — size and SHA-1 matched byte for byte.
 
-## Что вендорено
+## What was vendored
 
-13 файлов, 27 712 байт.
+13 files, 27,712 bytes.
 
-| Файл | Байт |
+| File | Bytes |
 |---|---|
 | `SKILL.md` | 2886 |
 | `README.md` | 2140 |
@@ -28,20 +28,20 @@
 | `rules/state-decouple-implementation.md` | 2699 |
 | `rules/state-lift-state.md` | 3224 |
 
-## Не вендорено
+## Not vendored
 
-- Бинарных и не-текстовых файлов внутри скилла нет.
-- `AGENTS.md` (22 627 байт) — скомпилированная версия тех же правил (`SKILL.md` + `rules/**`
-  одной сборкой). **Удалён из базы:** DSH читает любой `AGENTS.md` в дереве как инструкции
-  каталога, поэтому он автоматически грузился бы в контекст каждой сессии и дублировал
-  `SKILL.md` вместе с `rules/**`. Доступен по источнику:
+- There are no binary or non-text files inside the skill.
+- `AGENTS.md` (22,627 bytes) — a compiled version of the same rules (`SKILL.md` + `rules/**`
+  in a single build). **Removed from the base:** DSH reads any `AGENTS.md` in the tree as directory
+  instructions, so it would be loaded automatically into every session's context and would duplicate
+  `SKILL.md` together with `rules/**`. Available at the source:
   <https://raw.githubusercontent.com/vercel-labs/agent-skills/main/skills/composition-patterns/AGENTS.md>
 
-## Замечания
+## Notes
 
-- `SKILL.md` и frontmatter не правились: поле `name` равно `vercel-composition-patterns`
-  и не совпадает с именем каталога `composition-patterns` — так в источнике. DSH берёт имя
-  скилла из frontmatter, поэтому расхождение безопасно; `scripts/verify-library.ps1`
-  вендоренные имена с именем папки не сверяет.
+- `SKILL.md` and the frontmatter were not edited: the `name` field is `vercel-composition-patterns`
+  and does not match the directory name `composition-patterns` — that is how it is in the source. DSH takes the skill name
+  from the frontmatter, so the mismatch is harmless; `scripts/verify-library.ps1`
+  does not compare vendored names with the folder name.
 
-Локальная копия, автообновления нет: при изменениях у источника обновлять вручную.
+Local copy, no auto-update: refresh by hand when the source changes.

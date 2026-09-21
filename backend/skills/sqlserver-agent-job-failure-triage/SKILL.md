@@ -1,43 +1,80 @@
 ---
 name: sqlserver-agent-job-failure-triage
-description: "Разбор сбоя задания SQL Server Agent — сначала причина, потом безопасные действия, без слепых повторов и опасных «починок». USE WHEN: упало задание SQL Server Agent, maintenance-задача, автоматизированный job, нужно найти root cause. Keywords: SQL Server Agent, job failure, triage, root cause, safe remediation, T-SQL."
-whenToUse: Когда упало задание SQL Server Agent или автоматизированная задача и нужно понять причину до вмешательства.
+description: "Use when an automated job, workflow, maintenance task, or agent execution fails. Determines root cause and appropriate remediation while avoiding unsafe recovery actions. Keywords: SQL Server Agent, job failure, triage, root cause, safe remediation, T-SQL."
+whenToUse: "When a SQL Server Agent job or other automated task has failed and the cause must be understood before any intervention."
 ---
 
-# Разбор сбоя задания SQL Server Agent
+# Agent Job Failure Triage
 
-> **Источник:** адаптация официального примера `agent-job-failure-triage` из документации Microsoft Learn
-> «Use Agent skills with GitHub Copilot in SQL Server Management Studio»
-> (https://learn.microsoft.com/en-us/ssms/github-copilot/agent-skills), получено 2026-09-21.
-> Это локальная копия — автоматического обновления у неё нет; при изменениях у Microsoft обновлять вручную.
+> **Source:** official `agent-job-failure-triage` example from the Microsoft Learn documentation
+> "Use Agent skills with GitHub Copilot in SQL Server Management Studio"
+> (https://learn.microsoft.com/en-us/ssms/github-copilot/agent-skills), retrieved 2026-09-21.
+> Reproduced in the original English. This is a local copy — it does not update automatically;
+> when Microsoft changes the source, update it by hand.
 
-## Цель
+## Objective
 
-Определить root cause **до** попыток исправления.
+Identify root cause before attempting remediation.
 
-## Первое правило
+## First Rule
 
-Не повторять запуск многократно, не понимая, почему задание упало.
+Never retry repeatedly without understanding why the job failed.
 
-## Порядок расследования
+## Investigation Order
 
-1. **Собрать детали сбоя:** имя задания, текст ошибки, время начала и окончания, историю повторов.
-2. **Классифицировать сбой:** ресурсы / права / конфигурация / данные / зависимости / неизвестно.
-3. **Проверить недавние изменения:** деплой, изменения конфигурации, схемы, безопасности, инфраструктуры.
-4. **Определить blast radius:** какие данные и схема изменены заданием, кого это затронуло,
-   какие downstream-задания зависят, влияние на SLA, риск для корректности данных.
+### 1. Collect Failure Details
 
-## Безопасные действия
+Gather:
 
-- собирать логи;
-- проверять зависимости;
-- эскалировать, если root cause неизвестен.
+- Job name
+- Error message
+- Start time
+- End time
+- Retry history
 
-## Опасные действия
+### 2. Classify Failure
 
-- повторный запуск задания;
-- отключение задания;
-- принудительное завершение заданий;
-- отключение проверок валидации;
-- изменение продакшн-данных, чтобы задание «прошло»;
-- перезапуск службы SQL Server Agent.
+Determine whether failure is:
+
+- Resource-related
+- Permission-related
+- Configuration-related
+- Data-related
+- Dependency-related
+- Other or unknown
+
+### 3. Check Recent Changes
+
+Investigate:
+
+- Deployments
+- Configuration changes
+- Schema changes
+- Security changes
+- Infrastructure changes
+
+### 4. Determine Blast Radius
+
+Identify:
+
+- Data modified by job
+- Schema modified by job
+- Affected users or departments
+- Downstream jobs
+- SLA impact
+- Data correctness risk
+
+## Safe Actions
+
+- Collect logs
+- Validate dependencies
+- Escalate when root cause is unknown
+
+## Unsafe Actions
+
+- Retry job
+- Disable job
+- Force-completing jobs
+- Disabling validation checks
+- Modifying production data to "make it pass"
+- Restarting the SQL Agent service

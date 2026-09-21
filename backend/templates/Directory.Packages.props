@@ -1,11 +1,12 @@
 <Project>
 
   <!--
-    ШАБЛОН. Центральное управление версиями пакетов.
+    TEMPLATE. Central package version management.
 
-    Версии указываются ТОЛЬКО здесь; в .csproj — <PackageReference Include="..." /> без Version.
-    Набор пакетов ниже — пример: под проект заменяется фактическим, версии пинятся точно
-    (без диапазонов и latest). Обновление версии — отдельное изменение, после release notes.
+    Versions are stated HERE ONLY; a .csproj carries <PackageReference Include="..." /> without
+    Version. The set below is an example: replace it with the project's actual packages and pin
+    versions exactly (no ranges, no latest). A version bump is a separate change, made after
+    reading the release notes.
   -->
 
   <PropertyGroup>
@@ -13,12 +14,12 @@
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
   </PropertyGroup>
 
-  <ItemGroup Label="Домен и результат">
-    <!-- Result<T> для ожидаемых бизнес-ошибок -->
+  <ItemGroup Label="Domain and results">
+    <!-- Result<T> for expected business errors -->
     <PackageVersion Include="CSharpFunctionalExtensions" Version="3.7.0" />
   </ItemGroup>
 
-  <ItemGroup Label="Инфраструктура фреймворка">
+  <ItemGroup Label="Framework infrastructure">
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.10" />
     <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.10" />
     <PackageVersion Include="Microsoft.Extensions.Http" Version="10.0.10" />
@@ -34,15 +35,16 @@
     <PackageVersion Include="Scalar.AspNetCore" Version="2.16.16" />
   </ItemGroup>
 
-  <ItemGroup Label="Логирование">
+  <ItemGroup Label="Logging">
     <PackageVersion Include="Serilog.AspNetCore" Version="9.0.0" />
   </ItemGroup>
 
   <!--
-    Данные: подключать, только если в проекте есть БД.
-    Версии ниже — ориентир на момент фиксации шаблона, а не рекомендация «поставить эти».
+    Data: enable only when the project has a database.
+    The versions below are a reference point at the time the template was fixed, not a
+    recommendation to install these exact ones.
   -->
-  <ItemGroup Label="Данные (пример)">
+  <ItemGroup Label="Data (example)">
     <!--
     <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="10.0.10" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.10" />
@@ -52,15 +54,15 @@
     -->
   </ItemGroup>
 
-  <ItemGroup Label="Анализаторы (версии здесь, подключение в Directory.Build.props)">
+  <ItemGroup Label="Analysers (versions here, wired up in Directory.Build.props)">
     <PackageVersion Include="Roslynator.Analyzers" Version="4.15.0" />
     <PackageVersion Include="Meziantou.Analyzer" Version="3.0.134" />
     <PackageVersion Include="AsyncFixer" Version="2.1.0" />
     <PackageVersion Include="SonarAnalyzer.CSharp" Version="10.30.0.144632" />
   </ItemGroup>
 
-  <ItemGroup Label="Тесты">
-    <!-- xUnit v3 запускается через Microsoft.Testing.Platform: Microsoft.NET.Test.Sdk не нужен -->
+  <ItemGroup Label="Tests">
+    <!-- xUnit v3 runs through Microsoft.Testing.Platform: Microsoft.NET.Test.Sdk is not needed -->
     <PackageVersion Include="xunit.v3" Version="4.0.0" />
     <PackageVersion Include="AwesomeAssertions" Version="9.6.0" />
     <PackageVersion Include="NSubstitute" Version="6.2.0" />

@@ -1,51 +1,51 @@
 ---
 name: sqlserver-blocking-troubleshooting
-description: "Поиск head blocker в SQL Server и разбор причин длительной блокировки через DMV и Extended Events, с типовыми сценариями и решениями. USE WHEN: запросы висят, таймауты приложения, блокировки, «кто держит блокировку», deadlocks, KILLED/ROLLBACK, незакоммиченная транзакция. Keywords: SQL Server, blocking, head blocker, sys.dm_exec_requests, blocking_session_id, sys.dm_tran_locks, wait_type, Extended Events, deadlock, T-SQL."
-whenToUse: Когда запросы блокируют друг друга, приложение ловит таймауты или нужно найти сессию, держащую блокировку.
+description: "Finding the head blocker in SQL Server and diagnosing the causes of long blocking with DMVs and Extended Events, with typical scenarios and resolutions. USE WHEN: queries hang, application timeouts, blocking, \"who holds the lock\", deadlocks, KILLED/ROLLBACK, uncommitted transaction. Keywords: SQL Server, blocking, head blocker, sys.dm_exec_requests, blocking_session_id, sys.dm_tran_locks, wait_type, Extended Events, deadlock, T-SQL."
+whenToUse: "When queries block each other, the application hits timeouts, or the session holding a lock must be found."
 ---
 
-# Разбор блокировок в SQL Server
+# Troubleshooting Blocking in SQL Server
 
-> **Источник:** составлено по официальной статье Microsoft «Understand and resolve SQL Server blocking problems»
+> **Source:** compiled from the official Microsoft article "Understand and resolve SQL Server blocking problems"
 > (KB 224453) — https://learn.microsoft.com/en-us/troubleshoot/sql/database-engine/performance/understand-resolve-blocking,
-> получено 2026-09-21, статья обновлялась 2026-08-04. Локальная копия, автообновления нет.
+> retrieved 2026-09-21, article last updated 2026-08-04. Local copy, no automatic updates.
 
-## Что считать нормой
+## What Counts as Normal
 
-Блокировка — нормальное свойство любой реляционной СУБД с блокировками. Проблема начинается, когда
-сессия держит блокировки **долго** или **никогда не отпускает**: падает пропускная способность,
-приложение получает таймауты.
+Blocking is a normal property of any relational database engine that uses locks. A problem begins when
+a session holds locks **for a long time** or **never releases them**: throughput drops and
+the application starts hitting timeouts.
 
-Длительность удержания блокировок определяется транзакцией и уровнем изоляции:
-- вне транзакции `SELECT` держит блокировки только на момент чтения ресурса;
-- `INSERT`/`UPDATE`/`DELETE` держат блокировки на время выполнения запроса;
-- внутри транзакции — до её завершения.
+How long locks are held is determined by the transaction and the isolation level:
+- outside a transaction, `SELECT` holds locks only for the moment the resource is read;
+- `INSERT`/`UPDATE`/`DELETE` hold locks for the duration of the statement;
+- inside a transaction — until it completes.
 
-## Порядок разбора
+## Investigation Order
 
-1. Найти **head blocker** — сессию во главе цепочки блокировок.
-2. Найти запрос и транзакцию, которые держат блокировки продолжительное время.
-3. Понять, **почему** это происходит.
-4. Устранить причину: переработать запрос и транзакцию (не «подкрутить» сервер).
+1. Find the **head blocker** — the session at the head of the blocking chain.
+2. Find the query and the transaction that hold locks for a long time.
+3. Understand **why** this happens.
+4. Fix the cause: rework the query and the transaction (do not "tune" the server).
 
-## Сбор данных
+## Collecting Data
 
-**Быстрые способы в SSMS:**
+**Quick ways in SSMS:**
 - Object Explorer → Reports → Standard Reports → **Activity - All Blocking Transactions**
-  (показывает транзакции во главе цепочки, Blocking SQL Statement и Blocked SQL Statement);
-- Activity Monitor, колонка **Blocked By**.
+  (shows the transactions at the head of the chain, Blocking SQL Statement and Blocked SQL Statement);
+- Activity Monitor, the **Blocked By** column.
 
-**DMV/DMF:**
-- `sys.dm_exec_requests` — колонка `blocking_session_id` (`0` = не заблокирована);
-- `sys.dm_exec_sessions` — все соединения, включая неактивные;
-- `sys.dm_exec_sql_text(sql_handle)` — текст выполняющегося батча (`NULL` = запрос не выполняется);
-- `sys.dm_exec_input_buffer(session_id, request_id)` — последний переданный движку текст;
-- `sys.dm_os_waiting_tasks` — по каким `wait_type` ждут активные запросы;
-- `sys.dm_tran_locks` — какие блокировки удерживаются (осторожно: на проде возвращает много строк);
+**DMVs/DMFs:**
+- `sys.dm_exec_requests` — the `blocking_session_id` column (`0` = not blocked);
+- `sys.dm_exec_sessions` — all connections, including inactive ones;
+- `sys.dm_exec_sql_text(sql_handle)` — the text of the running batch (`NULL` = no query is running);
+- `sys.dm_exec_input_buffer(session_id, request_id)` — the last text submitted to the engine;
+- `sys.dm_os_waiting_tasks` — the `wait_type` values active requests are waiting on;
+- `sys.dm_tran_locks` — which locks are held (careful: on production it returns many rows);
 - `sys.dm_tran_active_transactions`, `sys.dm_tran_session_transactions`,
-  `sys.dm_tran_database_transactions` — открытые транзакции и их длительность.
+  `sys.dm_tran_database_transactions` — open transactions and how long they have been open.
 
-Короткий запрос «кто кого блокирует»:
+A short "who blocks whom" query:
 
 ```sql
 SELECT r.session_id, r.blocking_session_id, r.wait_type, r.wait_time, r.wait_resource,
@@ -55,51 +55,51 @@ OUTER APPLY sys.dm_exec_sql_text(r.sql_handle) AS t
 WHERE r.blocking_session_id <> 0;
 ```
 
-Большие готовые скрипты (полная цепочка блокировок, список удерживаемых блокировок по таблице)
-приведены в исходной статье KB 224453 — брать оттуда, а не сочинять.
+Large ready-made scripts (the full blocking chain, the list of locks held per table)
+are given in the source article KB 224453 — take them from there rather than inventing your own.
 
-**Extended Events (SQL Trace и SQL Server Profiler устарели).** Для разбора блокировок обычно
-включают категории: `blocked_process_report`, `lock_deadlock`, `attention`, `error_reported`,
+**Extended Events (SQL Trace and SQL Server Profiler are deprecated).** To troubleshoot blocking you
+usually enable the categories: `blocked_process_report`, `lock_deadlock`, `attention`, `error_reported`,
 `sql_batch_starting`/`sql_batch_completed`, `rpc_starting`/`rpc_completed`, `login`/`logout`,
-`existing_connection`, а также предупреждения `sort_warning`, `hash_warning`,
+`existing_connection`, as well as the warnings `sort_warning`, `hash_warning`,
 `missing_join_predicate`, `missing_column_statistics`.
-`blocked_process_report` **не выдаётся по умолчанию** — порог задаётся опцией
-`blocked process threshold` через `sp_configure` (в секундах).
+`blocked_process_report` **is not produced by default** — the threshold is set with the
+`blocked process threshold` option through `sp_configure` (in seconds).
 
-## Типовые сценарии
+## Typical Scenarios
 
-`wait_type`, `open_transaction_count` и `status` берутся из `sys.dm_exec_requests`
-и `sys.dm_exec_sessions`.
+`wait_type`, `open_transaction_count`, and `status` come from `sys.dm_exec_requests`
+and `sys.dm_exec_sessions`.
 
-| # | wait_type | open_tran | status | Разрешится само? | Симптомы |
-|---|-----------|-----------|--------|------------------|----------|
-| 1 | NOT NULL | >= 0 | runnable | Да, когда запрос завершится | растут `reads`, `cpu_time`, `memory_usage`; большая длительность запроса |
-| 2 | NULL | > 0 | sleeping | Нет, но SPID можно убить | в XEvents виден `attention` — таймаут или отмена запроса |
-| 3 | NULL | >= 0 | runnable | Нет, пока клиент не вычитает все строки или не закроет соединение | `open_transaction_count = 0` при READ COMMITTED — типичный признак |
-| 4 | разный | >= 0 | runnable | Нет, пока клиент не отменит запросы или не закроет соединения | `hostname` head blocker совпадает с `hostname` блокируемой сессии |
-| 5 | NULL | > 0 | rollback | Да | `attention` в XEvents: таймаут, отмена или rollback |
-| 6 | NULL | > 0 | sleeping | В итоге — когда ОС определит, что сессия неактивна | `last_request_start_time` намного раньше текущего времени |
+| # | wait_type | open_tran | status | Will it resolve on its own? | Symptoms |
+|---|-----------|-----------|--------|-----------------------------|----------|
+| 1 | NOT NULL | >= 0 | runnable | Yes, when the query completes | `reads`, `cpu_time`, `memory_usage` grow; long query duration |
+| 2 | NULL | > 0 | sleeping | No, but the SPID can be killed | `attention` is visible in XEvents — a timeout or a canceled query |
+| 3 | NULL | >= 0 | runnable | No, until the client consumes all rows or closes the connection | `open_transaction_count = 0` under READ COMMITTED is a typical sign |
+| 4 | varies | >= 0 | runnable | No, until the client cancels the queries or closes the connections | the head blocker's `hostname` matches the `hostname` of the blocked session |
+| 5 | NULL | > 0 | rollback | Yes | `attention` in XEvents: timeout, cancellation, or rollback |
+| 6 | NULL | > 0 | sleeping | Eventually — when the OS determines the session is inactive | `last_request_start_time` is well before the current time |
 
-## Решения
+## Resolutions
 
-- **Сценарий 1** — оптимизировать запрос (это производительность): смотреть Query Store, при
-  невозможности — уносить тяжёлый запрос с OLTP на отчётную систему или read-only реплику.
-  Отдельно учитывать эскалацию блокировок (row/page → table): держать транзакции короткими.
-- **Сценарий 2** — приложение обязано в обработчике ошибок выполнять `IF @@TRANCOUNT > 0 ROLLBACK TRAN`;
-  в процедурах, начинающих транзакцию, рассмотреть `SET XACT_ABORT ON`. Учитывать, что при
-  пуле соединений транзакция живёт до переиспользования соединения.
-- **Сценарий 3** — приложение обязано вычитывать **все** строки результата до конца;
-  серверная пагинация через `OFFSET/FETCH` этому не противоречит.
-- **Сценарий 4 (распределённый дедлок)** — SQL Server не может его обнаружить: одна из сторон
-  находится на уровне приложения. Помогает заданный query timeout, ломающий дедлок.
-- **Сценарий 5 (`KILLED/ROLLBACK`)** — ждать завершения отката; принудительная остановка инстанса
-  обычно контрпродуктивна. Не выполнять крупные пакетные операции в часы нагрузки.
-- **Сценарий 6 (осиротевшая транзакция)** — исправлять обработку ошибок в приложении
-  (`try/catch/finally`, `SET XACT_ABORT ON`); соединение можно завершить командой `KILL <spid>`.
+- **Scenario 1** — optimize the query (this is a performance issue): look at Query Store, and if that
+  is not possible, move the heavy query off OLTP to a reporting system or a read-only replica.
+  Also account for lock escalation (row/page → table): keep transactions short.
+- **Scenario 2** — the application must run `IF @@TRANCOUNT > 0 ROLLBACK TRAN` in its error handler;
+  for procedures that start a transaction, consider `SET XACT_ABORT ON`. Keep in mind that with
+  connection pooling the transaction lives until the connection is reused.
+- **Scenario 3** — the application must consume **all** rows of the result set to the end;
+  server-side paging with `OFFSET/FETCH` does not conflict with this.
+- **Scenario 4 (distributed deadlock)** — SQL Server cannot detect it, because one of the parties
+  lives at the application level. A configured query timeout helps by breaking the deadlock.
+- **Scenario 5 (`KILLED/ROLLBACK`)** — wait for the rollback to finish; forcibly stopping the instance
+  is usually counterproductive. Do not run large batch operations during peak hours.
+- **Scenario 6 (orphaned transaction)** — fix the error handling in the application
+  (`try/catch/finally`, `SET XACT_ABORT ON`); the connection can be terminated with `KILL <spid>`.
 
-## Ограничения и осторожность
+## Limitations and Cautions
 
-- `KILL` может выполняться до 30 секунд; не убивать сессии вслепую, не разобравшись в причине.
-- Диагностировать нужно и на стороне приложения: таймауты, отмена запросов, менеджмент соединений,
-  вычитывание всех строк — частые источники блокировок.
-- Сохранять снимки DMV во времени: одиночный замер не показывает тенденцию.
+- `KILL` can take up to 30 seconds; do not kill sessions blindly, without understanding the cause.
+- Diagnose the application side too: timeouts, query cancellation, connection management,
+  and consuming all rows are common sources of blocking.
+- Take DMV snapshots over time: a single measurement does not show a trend.

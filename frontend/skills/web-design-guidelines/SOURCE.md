@@ -1,29 +1,29 @@
-# Источник скилла: web-design-guidelines
+# Skill source: web-design-guidelines
 
-- **Репозиторий:** [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills)
-- **Путь в репозитории:** `skills/web-design-guidelines/`
-- **Ветка:** `main`
-- **Коммит:** `063bee94c3f4df8453406c830b0a7df0f2860278` (28.08.2026, «Merge pull request #328 … Update React View Transitions guidance and troubleshooting»)
-- **Дата получения:** 2026-09-21
-- **Лицензия:** MIT (указана в README репозитория; отдельного файла `LICENSE` в корне репозитория нет)
-- **Способ получения:** `web_fetch` + `write`; файл сверен с git-blob-SHA1 из GitHub API — размер и SHA-1 совпали побайтово.
+- **Repository:** [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills)
+- **Path in the repository:** `skills/web-design-guidelines/`
+- **Branch:** `main`
+- **Commit:** `063bee94c3f4df8453406c830b0a7df0f2860278` (28.08.2026, "Merge pull request #328 … Update React View Transitions guidance and troubleshooting")
+- **Retrieved:** 2026-09-21
+- **Licence:** MIT (stated in the repository README; there is no separate `LICENSE` file in the repository root)
+- **Retrieval method:** `web_fetch` + `write`; the file was verified against the git-blob-SHA1 from the GitHub API — size and SHA-1 matched byte for byte.
 
-## Что вендорено
+## What was vendored
 
-1 файл, 1 231 байт.
+1 file, 1,231 bytes.
 
-| Файл | Байт |
+| File | Bytes |
 |---|---|
 | `SKILL.md` | 1231 |
 
-## Не вендорено
+## Not vendored
 
-- Бинарных и не-текстовых файлов нет.
-- Нескачанных файлов нет: в каталоге источника `skills/web-design-guidelines/` лежит только `SKILL.md`.
+- There are no binary or non-text files.
+- There are no files that were not downloaded: the source directory `skills/web-design-guidelines/` contains only `SKILL.md`.
 
-## Замечания
+## Notes
 
-- `SKILL.md` и frontmatter не правились; поле `name` совпадает с именем каталога.
-- Правила скилл не хранит локально: он предписывает агенту при каждом вызове забирать гайд по внешнему URL (`web-interface-guidelines/command.md`), то есть для работы нужен сетевой доступ.
+- `SKILL.md` and the frontmatter were not edited; the `name` field matches the directory name.
+- The skill does not keep its rules locally: it instructs the agent to fetch the guide from an external URL (`web-interface-guidelines/command.md`) on every invocation, that is, network access is needed for it to work.
 
-Локальная копия, автообновления нет: при изменениях у источника обновлять вручную.
+Local copy, no auto-update: refresh by hand when the source changes.

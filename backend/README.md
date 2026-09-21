@@ -1,40 +1,42 @@
-# backend — раздел .NET
+# backend — the .NET section
 
-Общие принципы серверной разработки на .NET, скиллы по базам данных и шаблоны сборки.
-Раздел не знает о конкретном проекте: имена решений, таблиц и путей берутся из проекта.
+General principles of server-side development on .NET, database skills and build templates.
+The section knows nothing about a concrete project: solution, table and path names come
+from the project.
 
-## Что здесь
+## What is here
 
-| Путь | Что это | Когда читать |
+| Path | What it is | When to read |
 |---|---|---|
-| `principles/architecture.md` | Слои, направление зависимостей, паттерны домена | Проектирование структуры решения, новая сущность или сценарий |
-| `principles/data-and-storage.md` | EF Core, миграции, индексы, кэш, транзакции | Работа с БД, запросами, схемой |
-| `principles/api.md` | Контроллеры, ошибки, OpenAPI, health-checks, внешние вызовы | Новый эндпоинт, интеграция, контракт |
-| `principles/observability-and-config.md` | Логи, конфигурация, секреты | Логирование, настройки, ключи |
-| `principles/testing.md` | Уровни тестов, архитектурные тесты, DoD | Написание и приёмка тестов |
-| `principles/toolchain.md` | Анализаторы, центральные версии пакетов, сборка | Настройка сборки, замечания анализаторов |
-| `skills/` | Скиллы БД: разбор блокировок, Query Store, индексы, сбой SQL Agent | Работа с реальной БД и её проблемами |
-| `templates/` | `Directory.Build.props`, `Directory.Packages.props`, `.globalconfig`, `global.json`, `.gitignore` | Старт сборки бэкенда |
-| `sources.md` | Официальные наборы скиллов по .NET и БД | Поиск официального скилла перед своим |
+| `principles/architecture.md` | Layers, dependency direction, domain patterns | Designing a solution layout, a new entity or use case |
+| `principles/data-and-storage.md` | EF Core, migrations, indexes, cache, transactions | Work on the database, queries, schema |
+| `principles/api.md` | Controllers, errors, OpenAPI, health checks, outbound calls | A new endpoint, an integration, a contract |
+| `principles/observability-and-config.md` | Logs, configuration, secrets | Logging, settings, keys |
+| `principles/testing.md` | Test levels, architecture tests, DoD | Writing and accepting tests |
+| `principles/toolchain.md` | Analysers, central package versions, build | Build setup, analyser findings |
+| `skills/` | Database skills: blocking, Query Store, indexes, agent job failure | Working with a real database and its problems |
+| `templates/` | `Directory.Build.props`, `Directory.Packages.props`, `.globalconfig`, `global.json`, `.gitignore` | Starting a backend build |
+| `sources.md` | Official .NET and database skill sets | Looking for an official skill before writing one |
 
-Рядом с каждым вендоренным скиллом лежит `SOURCE.md`: репозиторий, путь, ветка или
-коммит, дата получения, лицензия и список нескачанных файлов. Формальные признаки всех
-скиллов раздела проверяет `scripts/verify-library.ps1`.
+Every vendored skill carries a `SOURCE.md` next to it: repository, path, branch or commit,
+retrieval date, licence and skipped files. Formal properties of every skill in the section
+are checked by `scripts/verify-library.ps1`.
 
-## Как развернуть под проект
+## Deploying into a project
 
-1. Скопировать `principles/` и `skills/` в проект (или взять за основу `.dsh/AGENTS.md`).
-2. Разложить скиллы: `scripts/install-skills.ps1 -Project <путь> -Set shared,backend`.
-3. Шаблоны из `templates/` положить в корень сборки бэкенда и подставить свои версии
-   пакетов в `Directory.Packages.props`.
-4. Проектную специфику (пути решения, имена слоёв, набор пакетов, ограничения среды)
-   дописать в `.dsh/AGENTS.md` проекта — принципы раздела её не содержат.
+1. Copy `principles/` and `skills/` into the project (or use them as the draft of its
+   `.dsh/AGENTS.md`).
+2. Lay the skills out: `scripts/install-skills.ps1 -Project <path> -Set shared,backend`.
+3. Put the files from `templates/` at the root of the backend build and fill in real package
+   versions in `Directory.Packages.props`.
+4. Add the project specifics (solution paths, layer names, package set, environment limits)
+   to the project's `.dsh/AGENTS.md` — the section's principles do not carry them.
 
-## Границы раздела
+## Section boundaries
 
-- **Принцип, а не команда.** Команды сборки и тестов зависят от проекта: их место —
-  `WORKFLOW.md` или `AGENTS.md` проекта.
-- **Никакой проектной конкретики.** Имена проектов, схем, таблиц, площадок, путей
-  в раздел не попадают.
-- **БД не предполагается по умолчанию.** Принципы данных применяются, только если
-  в проекте есть БД; «БД нет и не планируется» — законное состояние проекта.
+- **A principle, not a command.** Build and test commands depend on the project: they belong
+  in the project's `WORKFLOW.md` or `AGENTS.md`.
+- **No project specifics.** Project, schema, table, marketplace and path names never enter
+  the section.
+- **A database is not assumed.** The data principles apply only when the project has a
+  database; "no database, none planned" is a legitimate project state.

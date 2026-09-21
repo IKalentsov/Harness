@@ -1,37 +1,37 @@
-# UI и доступность
+# UI and accessibility
 
-## Обязательные состояния экрана
+## Mandatory screen states
 
-Каждый экран с асинхронными данными реализует **четыре** состояния, даже если кажется,
-что «пусто не бывает»:
+Every screen with asynchronous data implements **four** states, even when "empty never
+happens":
 
-| Состояние | Требование |
+| State | Requirement |
 |---|---|
-| Загрузка | Скелетон или индикатор на месте контента, без прыжков вёрстки; повторный запрос не сбрасывает экран |
-| Пусто | Текст «ничего не найдено» и что изменить в запросе; пустого белого экрана нет |
-| Ошибка | Понятный текст и действие «повторить»; технические детали — в лог, не пользователю |
-| Успех | Данные; частичный результат обрабатывается отдельно от ошибки |
+| Loading | A skeleton or spinner in place of the content, with no layout shift; a refetch does not reset the screen |
+| Empty | A "nothing found" text plus what to change in the query; never a blank white screen |
+| Error | A clear message and a retry action; technical detail goes to the log, not to the user |
+| Success | The data; a partial result is handled separately from an error |
 
-Сквозные состояния: «нет доступа» (если есть авторизация) и «частичная загрузка» —
-показываем то, что есть, с пометкой об источнике.
+Cross-cutting states: "no access" (where authorisation exists) and "partial load" — show what
+arrived, marked as partial.
 
-## Доступность (WCAG 2.2 AA — обязательно)
+## Accessibility (WCAG 2.2 AA — mandatory)
 
-- **Семантика:** `<button>` для действий, `<a>` для переходов, `<label>` для полей ввода.
-- **Клавиатура:** всё интерактивное достижимо Tab, фокус видим, порядок фокуса совпадает
-  с визуальным.
-- **Формы:** ошибка связана с полем и озвучивается; обязательность и формат объявлены.
-- **Асинхронный результат:** контейнер изменяющихся данных помечен как вежливое
-  live-объявление, чтобы результат озвучивался.
-- **Изображения:** содержательные — с текстовой альтернативой, декоративные — с пустой.
-  Иконочные кнопки имеют текстовую метку для скринридера.
-- **Размер интерактивных элементов** — не меньше 24×24 CSS px.
-- **Контраст** текста и элементов управления — по уровню AA; проверяется чек-листом,
-  а не на глаз.
+- **Semantics:** `<button>` for actions, `<a>` for navigation, `<label>` for inputs.
+- **Keyboard:** everything interactive is reachable by Tab, focus is visible, and the focus
+  order matches the visual one.
+- **Forms:** an error is tied to its field and announced; required fields and formats are
+  declared.
+- **Asynchronous results:** the changing container is marked as a polite live region so the
+  result is announced.
+- **Images:** meaningful ones carry a text alternative, decorative ones carry an empty one.
+  Icon-only buttons carry a screen-reader label.
+- **Interactive targets** are at least 24×24 CSS px.
+- **Contrast** of text and controls meets AA; it is checked against a checklist, not by eye.
 
-## Стилизация
+## Styling
 
-- Только утилиты и токены темы. CSS-файл на компонент, инлайновые стили и прямые
-  манипуляции с DOM запрещены.
-- Цвета, отступы и радиусы берутся из токенов: хардкод значений и `!important` запрещены.
-- Тёмная тема и адаптивность — часть дизайн-системы, а не отдельная задача «потом».
+- Utilities and theme tokens only. A per-component CSS file, inline styles and direct DOM
+  manipulation are out.
+- Colours, spacing and radii come from tokens: hard-coded values and `!important` are out.
+- Dark theme and responsiveness are part of the design system, not a separate "later" task.

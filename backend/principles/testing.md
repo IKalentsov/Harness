@@ -1,41 +1,41 @@
-# Тесты
+# Tests
 
-## Уровни
+## Levels
 
-| Уровень | Что проверяет | Чем пользуется |
+| Level | What it checks | What it uses |
 |---|---|---|
-| Модульные | Домен, value objects, валидаторы, сценарии с подменёнными зависимостями | Быстрые, без сети и БД |
-| Интеграционные | HTTP + реальная БД и кэш, сквозной сценарий через приложение | Контейнеры, фикстуры |
-| Архитектурные | Направление зависимостей и конвенции структуры | Разбор сборок (ArchUnitNET или аналог) |
+| Unit | Domain, value objects, validators, use cases with substituted dependencies | Fast, no network and no database |
+| Integration | HTTP plus a real database and cache, an end-to-end scenario through the app | Containers, fixtures |
+| Architecture | Dependency direction and structural conventions | Assembly inspection (ArchUnitNET or an equivalent) |
 
-- **TDD там, где есть правило:** сначала падающий тест на бизнес-правило, затем реализация.
-- **Один тест — одно поведение.** Имя описывает сценарий и ожидаемый результат.
-- **Дубли тел тестов снимаются параметризацией** (`[Theory]` и подобное), а не отключением
-  правила анализатора.
+- **TDD where a rule is involved:** a failing test on the business rule first, then the
+  implementation.
+- **One test, one behaviour.** The name describes the scenario and the expected outcome.
+- **Duplicated test bodies are removed by parameterisation** (`[Theory]` and the like), not by
+  silencing an analyser rule.
 
-## Архитектурные тесты как fitness-функции
+## Architecture tests as fitness functions
 
-- Каждое архитектурное правило имеет исполняемую проверку: запрет ссылок вверх по слоям,
-  запрет `async void`, обязательные суффиксы типов, запрет нежелательных зависимостей.
-- **Новая граница — негативная фикстура:** сборка-нарушитель, на которой проверка обязана
-  упасть. Без неё проверка не считается работающей.
-- Правило без исполняемой проверки — пожелание, а не архитектура.
+- Every architecture rule has an executable check: no upward references between layers, no
+  `async void`, mandatory type suffixes, no forbidden dependencies.
+- **A new boundary comes with a negative fixture:** an assembly that violates it, on which the
+  check must fail. Without that, the check is not considered working.
+- A rule without an executable check is a wish, not an architecture.
 
-## Чистота тестового контура
+## Keeping the test contour clean
 
-- **Направление ссылок — только от тестов к коду.** Продакшн-проекты о тестах не знают:
-  ни `InternalsVisibleTo`, ни «тестовых» веток в коде.
-- Тест, которому мешает дизайн, — сигнал править дизайн (явный контракт, инъекция
-  зависимости, абстракция времени), а не добавлять лазейку в продакшн-код.
-- Внешние вызовы в модульных тестах запрещены: подменяются абстракции.
-- Порядок запуска не влияет на результат; тесты изолированы по состоянию.
+- **References point from tests to code only.** Production projects know nothing about tests:
+  no `InternalsVisibleTo`, no "test" branches in the code.
+- A test that the design obstructs is a signal to fix the design (an explicit contract,
+  dependency injection, a time abstraction), not to add a back door to production code.
+- Module tests make no external calls: abstractions are substituted.
+- Execution order does not affect the result; tests are isolated by state.
 
-## Приёмка
+## Acceptance
 
-- Сборка без ошибок **и без предупреждений**: при `TreatWarningsAsErrors` предупреждение —
-  это ошибка сборки.
-- Все тесты зелёные, включая ранее существовавшие: регрессии недопустимы.
-- Новая функциональность покрыта тестом соответствующего уровня; исключение оформляет
-  пользователь.
-- Тесты запускаются так, как принято в проекте: команды берутся из `WORKFLOW.md` проекта,
-  а не из памяти.
+- The build is clean, with no errors **and no warnings**: under `TreatWarningsAsErrors` a
+  warning is a build error.
+- All tests are green, including the pre-existing ones: regressions are not acceptable.
+- New functionality is covered at the matching level; an exception is granted by the user.
+- Tests are run the way the project runs them: the commands come from the project's
+  `WORKFLOW.md`, not from memory.

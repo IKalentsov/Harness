@@ -78,6 +78,9 @@ foreach ($dir in $sources) {
             Write-Host ("would copy [{0}] {1}" -f $setName, $skill)
         }
         else {
+            # A pre-existing target directory makes Copy-Item nest the source inside it
+            # (skill/skill/SKILL.md), so the target is recreated from scratch every time.
+            if (Test-Path -LiteralPath $dest) { Remove-Item -LiteralPath $dest -Recurse -Force }
             Copy-Item -LiteralPath $_.FullName -Destination $dest -Recurse -Force
         }
     }

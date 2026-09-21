@@ -1,79 +1,79 @@
-# Журнал переноса
+# Migration log
 
-Дата: 2026-09-21. Источник: `H:\CSharp\MeProjects\AIProjects` (только чтение — там ничего
-не менялось). Цель переноса: собрать референсную базу, из которой разворачивается харнесс
-под конкретный проект.
+Date: 2026-09-21. Source: `H:\CSharp\MeProjects\AIProjects` (read-only — nothing there was
+changed). Purpose: assemble a reference base from which a project harness is deployed.
 
-## Что перенесено
+## What was migrated
 
-| Откуда | Куда | Что именно |
+| From | To | What exactly |
 |---|---|---|
-| `Harnes\.dsh\skills` (вендоренный набор) | `shared/skills` | 24 скилла mattpocock + `karpathy-guidelines` + `architecture-drift-check` + `SOURCES.json` + `verify-set.ps1/.cmd` |
-| `AI-Projects\.dsh\skills` | `backend/skills` | 4 скилла SQL Server (адаптация официальных agent skills Microsoft Learn) |
+| `Harnes\.dsh\skills` (vendored set) | `shared/skills` | 24 mattpocock skills + `karpathy-guidelines` + `architecture-drift-check` + `SOURCES.json` + `verify-set.ps1/.cmd` |
+| `AI-Projects\.dsh\skills` | `backend/skills` | 4 SQL Server skills: 2 official Microsoft Learn examples reproduced in the original English, 2 compiled from the official articles |
 | `WeatherBot\backend` | `backend/templates` | `Directory.Build.props`, `Directory.Packages.props`, `.globalconfig`, `global.json`, `.gitignore` |
-| `WeatherBot\.dsh\AGENTS.md` §7–8 | `backend/principles/*` | Устройство слоёв, паттерны, красные линии, сборка, стек |
-| `marketsniper-mvp\backend\AGENTS.md` | `backend/principles/*` | Слои и структура решения, данные, API, интеграции, логи, тесты, анализаторы |
-| `marketsniper-mvp\frontend\AGENTS.md` | `frontend/principles/*` | Стек, структура монорепо, данные и состояние, формы, состояния экрана, доступность, запреты, DoD |
+| `WeatherBot\.dsh\AGENTS.md` §7–8 | `backend/principles/*` | Layer layout, patterns, red lines, build, stack |
+| `marketsniper-mvp\backend\AGENTS.md` | `backend/principles/*` | Solution layers and layout, data, API, integrations, logs, tests, analysers |
+| `marketsniper-mvp\frontend\AGENTS.md` | `frontend/principles/*` | Stack, monorepo layout, data and state, forms, screen states, accessibility, prohibitions, DoD |
 
-При переносе убрана проектная конкретика: имена решений, сущностей и таблиц, площадки,
-пути, версии пакетов конкретного проекта, ограничения его среды.
+Project specifics were stripped during migration: solution, entity and table names,
+marketplaces, paths, the package versions of a concrete project, its environment limits.
 
-## Что НЕ перенесено и почему
+## What was NOT migrated, and why
 
-| Что | Причина |
+| What | Reason |
 |---|---|
-| `task-authoring` (постановка микро-задачи для исполнителя) | Ролевое: существует только внутри цикла «архитектор → исполнитель». Не инженерный принцип |
-| `code-review` (ревью микро-задачи по постановке) | То же. В базе есть `shared/skills/code-review` — ревью по двум осям, без привязки к ролям |
-| `systematic-debugging` | Дублирует `shared/skills/diagnosing-bugs` |
-| `memory-bank/`, `.clinerules/` | Состояние и легаси конкретного проекта |
-| `ai-tasks/**` (постановки, отчёты, ревью) | Артефакты процесса проекта, а не база |
-| Глобальный `~/.dsh/AGENTS.md` (удалён ранее) | Ролевые правила харнесса; в базе им места нет по определению |
+| `task-authoring` (writing a micro-task brief for an executor) | Role-bound: it exists only inside the "architect → executor" cycle. Not an engineering principle |
+| `code-review` (reviewing a micro-task against its brief) | Same. The base has `shared/skills/code-review` — a review along two axes, with no roles attached |
+| `systematic-debugging` | Duplicates `shared/skills/diagnosing-bugs` |
+| `memory-bank/`, `.clinerules/` | State and legacy of one concrete project |
+| `ai-tasks/**` (briefs, reports, reviews) | Artefacts of a project process, not a base |
+| The global `~/.dsh/AGENTS.md` (removed earlier) | Role rules of a harness; by definition they have no place in the base |
 
-## Официальные наборы, вендоренные 2026-09-21
+## Official sets vendored on 2026-09-21
 
-| Раздел | Источник | Что вендорено |
+| Section | Source | What was vendored |
 |---|---|---|
-| `backend/skills` | [dotnet/skills](https://github.com/dotnet/skills), MIT, коммит `8bbfe7a4` | `dotnet-webapi`, `optimizing-ef-core-queries`, `create-datadriven-aspnetcore`, `analyzing-dotnet-performance` (+7 references) |
-| `frontend/skills` | [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills), MIT, коммит `063bee94` | `react-best-practices` (+72 файла правил), `composition-patterns`, `web-design-guidelines`, `react-view-transitions`, `writing-guidelines` |
+| `backend/skills` | [dotnet/skills](https://github.com/dotnet/skills), MIT, commit `8bbfe7a4` | `dotnet-webapi`, `optimizing-ef-core-queries`, `create-datadriven-aspnetcore`, `analyzing-dotnet-performance` (+7 references) |
+| `frontend/skills` | [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills), MIT, commit `063bee94` | `react-best-practices` (+72 rule files), `composition-patterns`, `web-design-guidelines`, `react-view-transitions`, `writing-guidelines` |
 
-Способ: скачивание через сетевой инструмент харнесса по `raw.githubusercontent.com`,
-сверка каждого файла с размером и SHA-256 источника, `SOURCE.md` рядом с каждым скиллом,
-манифесты — `backend/skills/SOURCES.json` и `frontend/skills/SOURCES.json`.
+Method: files were fetched with the harness network tool from `raw.githubusercontent.com`,
+each one checked against the source size and SHA-256, a `SOURCE.md` placed next to every
+skill, manifests written to `backend/skills/SOURCES.json` and `frontend/skills/SOURCES.json`.
 
-**Независимая проверка.** Полные наборы были скачаны в `_vendor/` через
-`scripts/fetch-sources.ps1` (curl + codeload + tar), после чего все вендоренные файлы
-сверены с ними по SHA-256: frontend — 98 файлов, backend — 11 файлов, расхождений
-и пропусков нет. Каталог `_vendor/` после проверки удалён.
+**Independent check.** The full sets were downloaded into `_vendor/` with
+`scripts/fetch-sources.ps1` (curl + codeload + tar) and every vendored file was compared
+against them by SHA-256: frontend 98 files, backend 11 files, no mismatches and no missing
+files. `_vendor/` was removed after the check.
 
-Не взято осознанно, решение пользователя (2026-09-21):
+Consciously not taken, by the user's decision (2026-09-21):
 
-- **`dotnet/skills` — 43 скилла в репозиторий не тянем.** Держим только указатели
-  (путь `plugins/<плагин>/skills/<имя>` и команду загрузки) — перечень в `backend/sources.md`,
-  машинный список — `notVendored` в `backend/skills/SOURCES.json`.
-- **`vercel-labs/agent-skills` — 4 скилла не берём** (деплой и платформа Vercel, React Native):
-  перечень в `frontend/sources.md`.
+- **`dotnet/skills` — 43 skills are not pulled into the repository.** Only pointers are kept
+  (the `plugins/<plugin>/skills/<name>` path and the fetch command): the list is in
+  `backend/sources.md` and the machine-readable list in `notVendored` of
+  `backend/skills/SOURCES.json`.
+- **`vercel-labs/agent-skills` — 4 skills are not taken** (Vercel deployment and platform,
+  React Native): the list is in `frontend/sources.md`.
 
-Из вендоренных наборов исключены скомпилированные `AGENTS.md`: DSH читает любой
-`AGENTS.md` в дереве как инструкции каталога.
+Compiled `AGENTS.md` files were excluded from the vendored sets: DSH reads any `AGENTS.md`
+in the tree as directory instructions.
 
-## Скиллы Matt Pocock: оставлены все
+## Matt Pocock skills: all kept
 
-Решение пользователя (2026-09-21): **ничего не удалять.** 12 скиллов ниже — процесс
-Matt Pocock и обёртки; они остаются в `shared/skills` как есть. Таблица — справка о том,
-что это за скиллы, а не список на удаление.
+User decision (2026-09-21): **delete nothing.** The 12 skills below are Matt Pocock's process
+and wrappers; they stay in `shared/skills` as they are. The table is a reference to what they
+are, not a removal list.
 
-| Скилл | Что это |
+| Skill | What it is |
 |---|---|
-| `ask-matt` | Роутер по набору: подсказывает, какой скилл подходит под ситуацию |
-| `setup-matt-pocock-skills` | Разовая настройка репозитория под его процесс |
-| `triage`, `wayfinder`, `to-tickets`, `to-spec`, `implement` | Работа с тикетами и планированием |
-| `grill-me`, `grill-with-docs` | Короткие обёртки вокруг `grilling` |
-| `improve-codebase-architecture` | Поиск возможностей углубить модули (пересекается с `codebase-design`) |
-| `teach`, `to-questionnaire`, `wait-what`, `handoff` | Не про разработку: обучение, опросники, пересказ, передача контекста |
+| `ask-matt` | Router over the set: suggests which skill fits a situation |
+| `setup-matt-pocock-skills` | One-off setup of a repository for his process |
+| `triage`, `wayfinder`, `to-tickets`, `to-spec`, `implement` | Ticket work and planning |
+| `grill-me`, `grill-with-docs` | Short wrappers around `grilling` |
+| `improve-codebase-architecture` | Finding opportunities to deepen modules (overlaps `codebase-design`) |
+| `teach`, `to-questionnaire`, `wait-what`, `handoff` | Not about development: teaching, questionnaires, re-explaining, context hand-off |
 
-## Открытые вопросы
+## Open questions
 
-1. Процессные скиллы (`task-authoring`, ревью микро-задач, `systematic-debugging`)
-   в очищенном от ролей виде — нужны ли в базе или их место только в проекте?
-2. `frontend/templates/` — заполнить, когда появится первый рабочий фронтенд-монорепо
-   (перечень файлов — `frontend/templates/README.md`).
+1. Process skills (`task-authoring`, micro-task review, `systematic-debugging`) stripped of
+   roles — do they belong in the base, or only in a project?
+2. `frontend/templates/` — to be filled once the first working frontend monorepo exists
+   (the file list is in `frontend/templates/README.md`).

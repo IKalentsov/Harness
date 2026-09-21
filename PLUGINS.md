@@ -1,17 +1,17 @@
-# Плагины DSH
+# DSH plugins
 
-Справочник: какие плагины существуют и что делают. Всё остальное — установку, настройку
-и поведение — определяет сам плагин.
+Reference list: which plugins exist and what they do. Everything else — installation,
+configuration and behaviour — belongs to the plugin itself.
 
-Ставятся через **Settings → Plugin Market**.
+Install them through **Settings → Plugin Market**.
 
-| Плагин | Что делает |
+| Plugin | What it does |
 |---|---|
-| `dshmarket` | Plugin Market в вебе: поиск, установка, обновление и снятие плагинов |
-| `@linxin666/dsh-client-ui-skill-explorer` | Центр скиллов: список загруженных скиллов по источникам, включение и выключение модельного вызова, создание скиллов, удаление в корзину |
-| `dsh-skill-picker` | Кнопка у поля ввода: поиск по установленным скиллам и вставка `/имя-скилла` в сообщение |
-| `dsh-skills-anywhere` | Подключает скиллы из чужих каталогов (Claude Code, Codex, Cursor, Gemini CLI, Copilot), маркетплейсов и git-репозиториев |
-| `dsh-lsp-actions` | Действия языковых серверов: диагностика, форматирование, автодополнение, code actions, символы, rename |
-| `dsh-obsidian` | Доступ к локальному Obsidian-vault: поиск, чтение, запись, перемещение и корзина заметок |
-| `dsh-permission-rules` | Правила разрешений: что агенту можно без спроса |
-| `dsh-undo-savepoint` | Снапшоты изменений конфигурации, undo/redo/restore из веб-интерфейса и offline-CLI |
+| `dshmarket` | Plugin Market in the web UI: search, install, update and remove plugins |
+| `@linxin666/dsh-client-ui-skill-explorer` | Skill centre: loaded skills grouped by source, a toggle for model invocation, creating skills, deleting into a trash |
+| `dsh-skill-picker` | Button next to the composer: search installed skills and insert `/skill-name` into the message |
+| `dsh-skills-anywhere` | Pulls skills from other agents' directories (Claude Code, Codex, Cursor, Gemini CLI, Copilot), marketplaces and git repositories |
+| `dsh-lsp-actions` | Language-server actions: diagnostics, formatting, completion, code actions, symbols, rename |
+| `dsh-obsidian` | Access to a local Obsidian vault: search, read, write, move and trash notes |
+| `dsh-permission-rules` | Permission rules: what the agent may do without asking |
+| `dsh-undo-savepoint` | Snapshots of configuration changes, undo/redo/restore from the web UI and an offline CLI |

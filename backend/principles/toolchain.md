@@ -1,43 +1,44 @@
-# Тулинг сборки
+# Build toolchain
 
-## Централизованные настройки
+## Centralised settings
 
-| Файл | Назначение |
+| File | Purpose |
 |---|---|
-| `Directory.Build.props` | TFM, `Nullable`, `ImplicitUsings`, анализаторы, `TreatWarningsAsErrors`, стилевые правила в сборке |
-| `Directory.Packages.props` | **Все** версии пакетов; в `.csproj` — `<PackageReference>` без `Version` |
-| `.globalconfig` | Уровни правил анализаторов (severity, а не версии) |
-| `global.json` | Фиксация версии SDK и режима запуска тестов |
-| `.gitignore` | `bin`, `obj`, `.vs`, файлы с реальными секретами |
+| `Directory.Build.props` | TFM, `Nullable`, `ImplicitUsings`, analysers, `TreatWarningsAsErrors`, style rules at build time |
+| `Directory.Packages.props` | **Every** package version; `.csproj` files carry `<PackageReference>` without `Version` |
+| `.globalconfig` | Analyser rule severities (levels, not versions) |
+| `global.json` | SDK version pinning and the test runner mode |
+| `.gitignore` | Build output and files holding real secrets |
 
-- **Версия пакета указывается ровно в одном месте** — `Directory.Packages.props`.
-  Правка версии в `.csproj` или «локальный» пакет мимо центрального файла — ошибка.
-- **Версии пинятся точно и осознанно.** Плавающие теги, диапазоны и `latest` запрещены.
-  Обновление версии — отдельное изменение, после чтения release notes.
-- Общие свойства сборки наследуются всеми проектами решения автоматически; дублировать
-  их в отдельных `.csproj` не нужно.
+- **A package version is stated in exactly one place** — `Directory.Packages.props`. Editing a
+  version in a `.csproj`, or adding a package outside the central file, is a mistake.
+- **Versions are pinned exactly and deliberately.** Floating tags, ranges and `latest` are out.
+  A version bump is a separate change, made after reading the release notes.
+- Shared build properties are inherited by every project in the solution automatically;
+  repeating them in individual `.csproj` files is unnecessary.
 
-## Анализаторы и предупреждения
+## Analysers and warnings
 
-- Включены: общие правила стиля и рефакторинга, правила безопасности и корректности,
-  правила async/await, анализатор качества и безопасности кода.
-- `TreatWarningsAsErrors` + максимальный уровень анализа — осознанный режим: сборка
-  обязана быть чистой, а не «почти чистой».
-- **Отключение анализатора не заменяет исправление.** Порядок работы с замечанием:
-  1. правится код — анализатор почти всегда прав;
-  2. подавление (`#pragma`, атрибут, правка `.globalconfig`) самостоятельно не делается;
-  3. пользователю сообщается: код правила, точный текст, файл со строкой, оценка —
-     случай единичный или массовый. Решение принимает пользователь.
-- **Реестр отключённых правил ведётся в проекте**: правило, причина, дата, кто решил.
-  Отключение без записи в реестр не считается решением.
-- Утверждение «правила нет в `.globalconfig` — значит оно выключено» **неверно**: SDK
-  включает сотни правил по умолчанию, проверяется только сборкой.
+- Enabled: general style and refactoring rules, security and correctness rules, async/await
+  rules, and a code-quality and security analyser.
+- `TreatWarningsAsErrors` plus the top analysis level is a deliberate mode: the build must be
+  clean, not nearly clean.
+- **Silencing an analyser is not a substitute for fixing the code.** The order of work on a
+  finding:
+  1. fix the code — the analyser is almost always right;
+  2. suppression (`#pragma`, an attribute, an edit to `.globalconfig`) is not done on one's own;
+  3. the user is told: the rule code, its exact text, the file and line, and whether the case
+     is single or widespread. The decision is theirs.
+- **The project keeps a registry of disabled rules:** the rule, the reason, the date, who
+  decided. A suppression without a registry entry does not count as a decision.
+- "The rule is absent from `.globalconfig`, therefore it is off" is **false**: the SDK enables
+  hundreds of rules by default, and only a build reveals the truth.
 
-## Сборка в среде агента
+## Building inside the agent environment
 
-- Многопроцессная сборка использует именованные каналы, которые блокирует песочница:
-  сборка и restore выполняются с `-m:1`.
-- Без сети аудит NuGet становится ошибкой: restore выполняется с отключённым аудитом
-  или из локального кэша.
-- Пакеты, которых нет в кэше, восстанавливает пользователь; агент собирает без restore.
-- Запуск приложения и контейнеров — зона пользователя; агент делает сборку и тесты.
+- A multi-process build uses named pipes, which the sandbox blocks: build and restore run with
+  `-m:1`.
+- Without network access the NuGet audit turns into an error: restore runs with the audit
+  disabled or from the local cache.
+- Packages missing from the cache are restored by the user; the agent builds without restore.
+- Running the application and its containers is the user's job; the agent builds and tests.

@@ -1,40 +1,41 @@
-# Данные, состояние и формы
+# Data, state and forms
 
-## Серверные данные
+## Server data
 
-- **Только библиотека запросов** (TanStack Query и подобное). Связка «эффект + fetch»
-  и собственные кэши запрещены.
-- **Ключ запроса — через фабрику ключей фичи** и включает все параметры запроса: ключ,
-  потерявший параметр, отдаёт чужие данные из кэша.
-- `queryFn` живёт в `features/<name>/api/`; компонент вызывает хук фичи, а не клиент напрямую.
-- **Мутация обязана инвалидировать затронутые ключи** после завершения. Мутация без
-  инвалидации оставляет интерфейс с устаревшими данными.
-- Ответ API валидируется схемой до попадания в UI: неизвестный формат — ошибка, а не
-  «как-нибудь отрендерим».
+- **A query library only** (TanStack Query and the like). The effect-plus-fetch pair and
+  home-made caches are out.
+- **A query key comes from the feature's key factory** and carries every request parameter: a
+  key that lost a parameter serves someone else's data from the cache.
+- `queryFn` lives in `features/<name>/api/`; a component calls the feature's hook, never the
+  client directly.
+- **A mutation invalidates the affected keys** when it settles. A mutation without invalidation
+  leaves stale data on screen.
+- An API response is validated against a schema before it reaches the UI: an unknown shape is
+  an error, not "we will render something".
 
-## Клиентское состояние
+## Client state
 
-- **Клиентское состояние — только для клиентского.** Серверные данные в клиентском сторе
-  не дублируются.
-- Локальный стор (Zustand) — для UI-состояния и черновиков, которые ещё не применены.
-- **Состояние экрана, которое должно шариться ссылкой, живёт в URL** (запрос, фильтры,
-  сортировка, страница): ссылка на результат переживает перезагрузку и пересылку.
-- Производные значения вычисляются, а не хранятся вторым полем.
+- **Client state is for client concerns only.** Server data is not duplicated in a client store.
+- A local store (Zustand) holds UI state and drafts that have not been applied yet.
+- **State that must be shareable through a link lives in the URL** (query, filters, sorting,
+  page): a link to a result survives a reload and forwarding.
+- Derived values are computed, not stored as a second field.
 
-## Формы
+## Forms
 
-- Только связка «форма + схема валидации» (`react-hook-form` + `zod` через резолвер);
-  отдельный `useState` на каждое поле запрещён.
-- **Схема — единственный источник типа формы** (вывод типа из схемы), а не отдельный
-  рукописный интерфейс.
-- Тексты ошибок берутся из схемы и не дублируются в разметке.
-- Ошибка валидации связана с полем: атрибуты невалидности и описания выставляются
-  на элементе ввода.
+- Only the form-plus-schema pair (`react-hook-form` + `zod` through a resolver); a separate
+  `useState` per field is out.
+- **The schema is the single source of the form's type** (inferred from the schema), not a
+  hand-written interface next to it.
+- Error messages come from the schema and are not duplicated in the markup.
+- A validation error is tied to its field: invalid and described-by attributes are set on the
+  input element.
 
-## API-клиент
+## API client
 
-- Клиент и хуки **генерируются из OpenAPI-схемы бэкенда**; сгенерированные файлы
-  в репозитории не правятся вручную.
-- Схема на бэкенде изменилась — в том же изменении регенерируется клиент; расхождение
-  проверяется в CI.
-- UI работает только через хуки фичи: прямые вызовы клиента в компонентах запрещены.
+- The client and its hooks are **generated from the backend OpenAPI schema**; generated files
+  in the repository are never edited by hand.
+- When the backend schema changes, the client is regenerated in the same change; a divergence
+  is caught by CI.
+- The UI works only through the feature's hooks: calling the client directly from a component
+  is out.

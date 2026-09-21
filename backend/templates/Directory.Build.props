@@ -4,41 +4,41 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
-    <!-- Все предупреждения становятся ошибками компиляции -->
+    <!-- Every warning becomes a compilation error -->
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
 
-    <!-- Включаем стилевые правила в build -->
+    <!-- Style rules run at build time -->
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <AnalysisLevel>latest</AnalysisLevel>
     <AnalysisMode>All</AnalysisMode>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
 
-    <!-- Исключаем bin/obj из сборки -->
+    <!-- Keep bin/obj out of the build -->
     <DefaultItemExcludes>$(DefaultItemExcludes);**/bin/**;**/obj/**</DefaultItemExcludes>
   </PropertyGroup>
 
-  <!-- Анализаторы кода — применяются ко всем проектам автоматически -->
+  <!-- Code analysers: applied to every project automatically -->
   <ItemGroup>
-    <!-- Общие правила рефакторинга и стиля -->
+    <!-- General refactoring and style rules -->
     <PackageReference Include="Roslynator.Analyzers">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
 
-    <!-- Правила безопасности и корректности -->
+    <!-- Correctness and security rules -->
     <PackageReference Include="Meziantou.Analyzer">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
 
-    <!-- Правила для async/await -->
+    <!-- async/await rules -->
     <PackageReference Include="AsyncFixer">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
 
-    <!-- Правила Sonar — безопасность и качество кода -->
+    <!-- Code quality and security rules -->
     <PackageReference Include="SonarAnalyzer.CSharp">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

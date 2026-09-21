@@ -6,8 +6,8 @@
     "version":  "1.2.3",
     "license":  "MIT",
     "fetchedAt":  "2026-09-21",
-    "sourceOfTruth":  "список скиллов взят из .claude-plugin/plugin.json апстрима",
-    "installedVia":  "ручное копирование папок скиллов из tarball (без .git и без npx skills)",
+    "sourceOfTruth":  "the list of skills is taken from the upstream .claude-plugin/plugin.json",
+    "installedVia":  "manual copying of skill folders from the tarball (without .git and without npx skills)",
     "skills":  [
                    {
                        "name":  "ask-matt",
@@ -142,7 +142,7 @@
                                       "SKILL.md":  "2bcd89e97777cdb705914424e39c97d5db524c8eb4eafac8120778a07774f0ec",
                                       "triage-labels.md":  "4f53c9b40ce2651e3611aa090eaedbd6dbc9b71ef8c5f7e65eac0d8263190d0d"
                                   },
-                       "note":  "если запускать — писать AGENTS.md, CLAUDE.md не создавать"
+                       "note":  "if run, write AGENTS.md, do not create CLAUDE.md"
                    },
                    {
                        "name":  "tdd",
@@ -230,22 +230,22 @@
                          {
                              "name":  "wizard",
                              "source":  "skills/engineering/wizard",
-                             "reason":  "генерирует интерактивный bash-скрипт; под Windows неудобно, исключён по решению пользователя"
+                             "reason":  "generates an interactive bash script; inconvenient on Windows, excluded by user decision"
                          },
                          {
                              "name":  "skills/in-progress/*",
                              "source":  "skills/in-progress",
-                             "reason":  "неопубликованные скиллы (claude-handoff, implement-spec, loop-me, pr, retro, setup-ts-deep-modules, writing-beats/fragments/shape)"
+                             "reason":  "unpublished skills (claude-handoff, implement-spec, loop-me, pr, retro, setup-ts-deep-modules, writing-beats/fragments/shape)"
                          },
                          {
                              "name":  "skills/misc/*",
                              "source":  "skills/misc",
-                             "reason":  "git-guardrails-claude-code (хуки Claude Code), migrate-to-shoehorn (TS), scaffold-exercises, setup-pre-commit"
+                             "reason":  "git-guardrails-claude-code (Claude Code hooks), migrate-to-shoehorn (TS), scaffold-exercises, setup-pre-commit"
                          },
                          {
                              "name":  "skills/deprecated/*",
                              "source":  "skills/deprecated",
-                             "reason":  "устаревшие скиллы апстрима"
+                             "reason":  "deprecated upstream skills"
                          }
                      ]
 }

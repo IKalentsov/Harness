@@ -1,10 +1,10 @@
-# Локальное состояние харнесса: сессии, кеши, настройки
+# Local harness state: sessions, caches, settings
 .dsh/
 
-# Вендоренные официальные наборы скиллов (скачиваются scripts/fetch-sources.ps1)
+# Vendored official skill sets (fetched by scripts/fetch-sources.ps1)
 _vendor/
 
-# Временные каталоги распаковки и проб
+# Temporary unpack and probe directories
 .tmp-sessions/
 
 # IDE

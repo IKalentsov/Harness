@@ -1,46 +1,82 @@
 ---
 name: sqlserver-index-verification
-description: "Проверка рекомендаций по индексам SQL Server до их создания — польза для чтения против стоимости записи, дубли и перекрытия, влияние на хранилище. USE WHEN: есть рекомендация missing index, агент предложил создать индекс, тюнинг запроса требует индекса, нужно решить «создавать или нет». Keywords: SQL Server, index, missing index DMV, redundant index, write overhead, index verification, T-SQL."
-whenToUse: Когда есть готовая рекомендация по индексу и её нужно проверить до внедрения.
+description: "Use when an index recommendation has been generated and must be validated before implementation. Verifies workload benefit, redundancy, write overhead, storage impact, and existing index coverage. Keywords: SQL Server, index, missing index DMV, redundant index, write overhead, index verification, T-SQL."
+whenToUse: "When a ready index recommendation exists and it must be validated before it is implemented."
 ---
 
-# Проверка индексов SQL Server
+# Index Verification
 
-> **Источник:** адаптация официального примера `index-verification` из документации Microsoft Learn
-> «Use Agent skills with GitHub Copilot in SQL Server Management Studio»
-> (https://learn.microsoft.com/en-us/ssms/github-copilot/agent-skills), получено 2026-09-21.
-> Это локальная копия — автоматического обновления у неё нет; при изменениях у Microsoft обновлять вручную.
+> **Source:** official `index-verification` example from the Microsoft Learn documentation
+> "Use Agent skills with GitHub Copilot in SQL Server Management Studio"
+> (https://learn.microsoft.com/en-us/ssms/github-copilot/agent-skills), retrieved 2026-09-21.
+> Reproduced in the original English. This is a local copy — it does not update automatically;
+> when Microsoft changes the source, update it by hand.
 
-## Когда применять
+## Use this skill when
 
-- есть рекомендация missing index;
-- агент сгенерировал рекомендацию по индексу;
-- тюнинг запроса указывает на необходимость индекса;
-- пользователь спрашивает, стоит ли создавать индекс.
+- A missing index recommendation exists
+- An agent generated an index recommendation
+- Query tuning suggests adding an index
+- A user asks whether an index should be created
 
-## Не считать по умолчанию
+## Never assume
 
-- Missing index DMV — это **рекомендация**, а не требование.
-- Не предлагать создание индекса, пока проверка не завершена.
+- Missing index DMVs are recommendations, not requirements.
+- Do not recommend index creation until validation is complete.
 
-## Чек-лист проверки
+## Verification Checklist
 
-1. **Существующие индексы.** Есть ли уже эквивалентный индекс; покрывает ли нагрузку более широкий индекс;
-   закрывают ли её включённые столбцы; дублирует ли рекомендация другую рекомендацию.
-2. **Польза для чтения.** Частота выполнения запроса, текущая стоимость выполнения,
-   ожидаемое улучшение seek/selectivity, сколько запросов затрагивается.
-3. **Стоимость записи.** Влияние на INSERT, UPDATE, DELETE и на дополнительное обслуживание.
-4. **Влияние на хранилище.** Размер индекса на диске, давление на память, влияние на репликацию.
-5. **Решение.** Ровно одно из: создать индекс / изменить существующий / объединить с существующей
-   рекомендацией / отклонить рекомендацию.
+### 1. Check Existing Indexes
 
-## Избегать
+Determine whether:
 
-- слепо доверять missing-index DMV;
-- создавать перекрывающиеся индексы;
-- рекомендовать индексы под разовые запросы;
-- игнорировать write-heavy нагрузку.
+- An equivalent index already exists
+- A wider index already covers the workload
+- Included columns already satisfy the query
+- The recommendation duplicates another recommendation
 
-## Формат ответа
+### 2. Estimate Read Benefit
 
-Таблица: имя индекса, столбцы, тип, рекомендация (create / modify / consolidate / reject).
+Evaluate:
+
+- Query execution frequency
+- Current execution cost
+- Expected seek/selectivity improvement
+- Number of affected queries
+
+### 3. Evaluate Write Cost
+
+Determine:
+
+- Insert impact
+- Update impact
+- Delete impact
+- Additional maintenance cost
+
+### 4. Evaluate Storage Impact
+
+Estimate:
+
+- Index size on disk
+- Memory pressure
+- Replication impact
+
+### 5. Make Recommendation
+
+Return one of:
+
+- Create index
+- Modify existing index
+- Consolidate with existing recommendation
+- Reject recommendation
+
+## Avoid
+
+- Blindly trusting missing-index DMVs
+- Creating overlapping indexes
+- Recommending indexes for one-off queries
+- Ignoring write-heavy workloads
+
+## Output Format
+
+Format output as a table: index name, columns, type, and recommendation (create / modify / consolidate / reject).

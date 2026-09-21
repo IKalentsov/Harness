@@ -1,5 +1,5 @@
 {
-  "description": "Вендоренные официальные скиллы раздела frontend. Источник правды о происхождении: что, откуда, когда и под какой лицензией взято. Рядом с каждым скиллом лежит SOURCE.md с той же информацией.",
+  "description": "Vendored official skills of the frontend section. The source of truth about provenance: what was taken, from where, when and under which license. Next to each skill there is a SOURCE.md with the same information.",
   "updatedAt": "2026-09-21",
   "sources": [
     {
@@ -11,7 +11,7 @@
       "commitDate": "2026-08-28",
       "license": "MIT",
       "fetchedAt": "2026-09-21",
-      "method": "web_fetch и curl по raw.githubusercontent.com, сверка размера и git-blob-SHA1 каждого файла с источником"
+      "method": "web_fetch and curl over raw.githubusercontent.com, size and git-blob-SHA1 of each file verified against the source"
     }
   ],
   "skills": [
@@ -21,8 +21,8 @@
       "source": "vercel-agent-skills",
       "path": "skills/react-best-practices",
       "files": 76,
-      "deviation": "AGENTS.md (108 КБ, скомпилированная версия тех же правил) не вендорена — дублирует rules/",
-      "note": "frontmatter name отличается от имени папки; DSH берёт имя из frontmatter"
+      "deviation": "AGENTS.md (108 KB, a compiled version of the same rules) is not vendored — it duplicates rules/",
+      "note": "the frontmatter name differs from the folder name; DSH takes the name from the frontmatter"
     },
     {
       "name": "vercel-composition-patterns",
@@ -30,7 +30,7 @@
       "source": "vercel-agent-skills",
       "path": "skills/composition-patterns",
       "files": 14,
-      "deviation": "AGENTS.md (22 КБ, скомпилированная версия тех же правил) удалён: DSH грузит AGENTS.md как инструкции каталога и дублировал бы контекст"
+      "deviation": "AGENTS.md (22 KB, a compiled version of the same rules) removed: DSH loads AGENTS.md as directory instructions and it would duplicate context"
     },
     {
       "name": "vercel-react-view-transitions",
@@ -38,8 +38,8 @@
       "source": "vercel-agent-skills",
       "path": "skills/react-view-transitions",
       "files": 9,
-      "deviation": "AGENTS.md (скомпилированная версия) не вендорена",
-      "note": "frontmatter name отличается от имени папки"
+      "deviation": "AGENTS.md (compiled version) is not vendored",
+      "note": "the frontmatter name differs from the folder name"
     },
     {
       "name": "web-design-guidelines",
@@ -60,7 +60,7 @@
   ],
   "notVendored": {
     "source": "vercel-agent-skills",
-    "reason": "не применимо к стеку раздела (Vite SPA + React) или относится к платформе Vercel, а не к коду",
+    "reason": "not applicable to the stack of the section (Vite SPA + React) or relates to the Vercel platform rather than to code",
     "skills": [
       "deploy-to-vercel",
       "react-native-skills",

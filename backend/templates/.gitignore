@@ -8,8 +8,8 @@
 .env.*
 !.env.example
 
-# Локальная конфигурация с секретами (токен бота, ключ API погоды) — НЕ коммитить.
-# Шаблон структуры без секретов — appsettings.json.
+# Local configuration holding secrets (a bot token, an API key) — never commit.
+# The structure template without secrets is appsettings.json.
 appsettings.Development.json
 **/appsettings.Development.json
 

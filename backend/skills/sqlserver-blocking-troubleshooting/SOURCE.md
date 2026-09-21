@@ -1,14 +1,15 @@
-# Источник
+# Source
 
-- **Страница:** Microsoft Learn — «Understand and resolve SQL Server blocking problems» (KB 224453)
+- **Page:** Microsoft Learn — "Understand and resolve SQL Server blocking problems" (KB 224453)
   https://learn.microsoft.com/en-us/troubleshoot/sql/database-engine/performance/understand-resolve-blocking
-- **Дата получения:** 2026-09-21 (статья обновлялась 2026-08-04)
-- **Что это:** локальная компиляция по официальной статье: диагностика блокировок через DMV
-  и Extended Events, типовые сценарии и безопасные действия.
-- **Лицензия:** условия использования материалов Microsoft Learn — по лицензии Microsoft;
-  примеры кода в документации Microsoft обычно распространяются по MIT. При переносе
-  скилла в проект лицензию источника сохранять.
-- **Нескачанные файлы:** нет, скилл состоит из одного `SKILL.md`.
+- **Retrieved:** 2026-09-21 (the article was last updated 2026-08-04)
+- **Status:** Compiled from the official Microsoft Learn articles; English text prepared for this repository.
+  There is no ready-made official skill for this topic, so this is our own compilation: diagnosing
+  blocking through DMVs and Extended Events, typical scenarios, and safe actions.
+- **Files not downloaded:** none, the skill consists of a single `SKILL.md`.
+- **License:** use of Microsoft Learn materials is governed by the Microsoft license;
+  code examples in Microsoft documentation are usually distributed under MIT. When the skill is
+  moved into a project, preserve the source license.
 
-Локальная копия, автообновления нет: при изменениях у источника обновлять вручную
-и сдвигать дату получения.
+Local copy, no automatic updates: when the source changes, update it by hand
+and move the retrieval date forward.

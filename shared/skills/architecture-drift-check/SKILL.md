@@ -1,49 +1,49 @@
 ---
 name: architecture-drift-check
-description: Сверка кодовой базы с ARCHITECTURE.md и актуализация архитектурной документации после изменений структуры, контрактов или стека.
-whenToUse: Когда менялась структура, контракты, стек или набор пакетов, либо нужно проверить, что код не разошёлся с ARCHITECTURE.md.
+description: Compares the codebase with ARCHITECTURE.md and brings the architecture documentation up to date after changes to structure, contracts or stack.
+whenToUse: When structure, contracts, the stack or the package set changed, or when you need to check that the code has not drifted from ARCHITECTURE.md.
 ---
 
 # Architecture Drift Check
 
-`ARCHITECTURE.md` — единственный источник правды по устройству системы. Этот скилл
-проверяет, что документ и код говорят одно и то же, и закрывает расхождение.
+`ARCHITECTURE.md` is the single source of truth for how the system is built. This skill checks
+that the document and the code tell the same story, and closes the gap.
 
-## Кто меняет документ
+## Who edits the document
 
-`ARCHITECTURE.md` меняет владелец архитектуры проекта. Изменение согласуется
-с пользователем до правки; исполнитель задачи документ не переписывает.
+`ARCHITECTURE.md` is edited by whoever owns the project's architecture. The change is agreed
+with the user before the edit; the executor of a task does not rewrite the document.
 
-## Что проверять
+## What to check
 
-Конкретные пути, слои и запреты берутся из **активного проекта** (`ARCHITECTURE.md`,
-`.dsh/AGENTS.md`, `WORKFLOW.md`), а не из памяти:
+Concrete paths, layers and prohibitions come from the **active project** (`ARCHITECTURE.md`,
+`.dsh/AGENTS.md`, `WORKFLOW.md`), not from memory:
 
-- фактическая структура проектов и папок соответствует `ARCHITECTURE.md`;
-- направление зависимостей между слоями не нарушено;
-- контракты, сущности, value objects описаны и совпадают с кодом;
-- стек и версии пакетов в документации совпадают с файлами управления пакетами;
-- раздел про тестирование есть; если нет — добавить;
-- в документации нет упоминаний технологий, которых в проекте нет (БД, контейнеры,
-  фронтенд и т. п.), пока это не решено явно;
-- файлы и папки, перечисленные в документации, существуют; ничего лишнего не описано.
+- the actual project and folder layout matches `ARCHITECTURE.md`;
+- the dependency direction between layers is intact;
+- contracts, entities and value objects are described and match the code;
+- the stack and package versions in the document match the package management files;
+- a testing section exists; add one if it does not;
+- the document mentions no technology the project does not have (a database, containers,
+  a frontend and the like) until that is decided explicitly;
+- files and folders named in the document exist; nothing extra is described.
 
-## Когда обновлять
+## When to update
 
-После любого изменения структуры, контрактов, стека или набора пакетов — обновить
-`ARCHITECTURE.md` **в том же прогоне**, не откладывая. Дату «последнее обновление» двигать.
+After any change to structure, contracts, the stack or the package set, update
+`ARCHITECTURE.md` **in the same run**, without deferring it. Move the "last updated" date.
 
-## Порядок
+## Order
 
-1. Прочитать `ARCHITECTURE.md` проекта.
-2. Прочитать фактическую структуру (glob/grep), не полагаясь на память.
-3. Сверить расхождения и зафиксировать их списком.
-4. Обновить `ARCHITECTURE.md` (и связанные документы процесса), указав изменения.
-5. Служебные каталоги (`.git`, `.dsh`, `.vscode`, `.vs`, `bin`, `obj`, `node_modules`)
-   не обходить без необходимости — только если без них проверка невозможна.
+1. Read the project's `ARCHITECTURE.md`.
+2. Read the actual structure (glob/grep) instead of relying on memory.
+3. Compare and record the divergences as a list.
+4. Update `ARCHITECTURE.md` (and the related process documents), stating the changes.
+5. Service directories (`.git`, `.dsh`, `.vscode`, `.vs`, `bin`, `obj`, `node_modules`) are
+   not walked without need — only when the check is impossible without them.
 
-## Реестр находок
+## Finding registry
 
-Находки и открытые вопросы живут в `ARCHITECTURE.md` (разделы «Известные проблемы»
-и TODO). Закрытая находка **вычёркивается**, а не помечается «закрыто»: список должен
-показывать только то, что ещё живо.
+Findings and open questions live in `ARCHITECTURE.md` (the "Known problems" and TODO
+sections). A resolved finding is **struck out**, not marked "closed": the list must show only
+what is still live.

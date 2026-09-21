@@ -1,29 +1,29 @@
-# Источник скилла
+# Skill source
 
-- **Репозиторий:** https://github.com/dotnet/skills
-- **Путь скилла в репозитории:** `plugins/dotnet-aspnetcore/skills/dotnet-webapi`
-- **Ветка:** `main`
-- **Коммит:** `8bbfe7a4d1c5c0cd42cd04e38031779c75f2dda3` (17.09.2026)
-- **Дата получения:** 21.09.2026
-- **Лицензия:** MIT (файл `LICENSE` в корне репозитория, Copyright (c) .NET Foundation and Contributors)
-- **Способ получения:** `https://raw.githubusercontent.com/dotnet/skills/main/<путь>`
+- **Repository:** https://github.com/dotnet/skills
+- **Skill path in the repository:** `plugins/dotnet-aspnetcore/skills/dotnet-webapi`
+- **Branch:** `main`
+- **Commit:** `8bbfe7a4d1c5c0cd42cd04e38031779c75f2dda3` (17.09.2026)
+- **Retrieved:** 21.09.2026
+- **Licence:** MIT (the `LICENSE` file in the repository root, Copyright (c) .NET Foundation and Contributors)
+- **Retrieval method:** `https://raw.githubusercontent.com/dotnet/skills/main/<path>`
 
-## Файлы
+## Files
 
-| Файл | Размер, байт |
+| File | Size, bytes |
 |---|---|
 | `SKILL.md` | 21923 |
 
-## Нескачанные файлы
+## Files not downloaded
 
-Нет. Все файлы скилла — текстовые (Markdown) и скачаны дословно, размер совпадает с источником.
-Бинарных файлов (`.zip`, `.png`, `.dll`, `.exe`) в скилле нет.
+None. All the skill's files are text (Markdown) and were downloaded verbatim, the size matches the source.
+There are no binary files (`.zip`, `.png`, `.dll`, `.exe`) in the skill.
 
-## Примечания
+## Notes
 
-- В `description` есть двоеточия внутри значений `USE FOR:` и `DO NOT USE FOR:`. Значение
-  записано блочным скаляром (`description: >`), поэтому YAML корректен и правки не требуются.
-  `SKILL.md` не изменялся.
-- Frontmatter содержит поле `license: MIT`, которого нет у `create-datadriven-aspnetcore`.
+- The `description` contains colons inside the `USE FOR:` and `DO NOT USE FOR:` values. The value
+  is written as a block scalar (`description: >`), so the YAML is valid and no edits are needed.
+  `SKILL.md` was not changed.
+- The frontmatter contains a `license: MIT` field that `create-datadriven-aspnetcore` does not have.
 
-Локальная копия, автообновления нет: при изменениях у источника обновлять вручную
+Local copy, no auto-update: refresh by hand when the source changes

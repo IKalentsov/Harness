@@ -1,58 +1,60 @@
-# Архитектура решения
+# Solution architecture
 
-## Слои и направление зависимостей
+## Layers and dependency direction
 
-Clean Architecture, зависимости строго внутрь:
+Clean Architecture, dependencies strictly inward:
 
 ```
 Web ──▶ Infrastructure.* ──▶ Core (Application) ──▶ Domain ◀── Contracts
 ```
 
-- `Domain` — сущности, value objects, доменные правила, инварианты. Только BCL: ни одного
-  пакета, ни одной ссылки на другие проекты, ни знаний о БД, HTTP и DI.
-- `Core` / `Application` — сценарии (use cases), валидаторы, абстракции внешнего мира.
-  Не знает об Infrastructure.
-- `Infrastructure.*` — реализации абстракций: БД, кэш, внешние API. Разбивается по
-  технологиям (`Infrastructure.Postgres`, `Infrastructure.Redis`, ...).
-- `Web` — транспорт: контроллеры, middleware, DI-композиция.
-- `Contracts` — DTO наружу; может опираться на доменные типы.
+- `Domain` — entities, value objects, domain rules, invariants. BCL only: no packages, no
+  references to other projects, no knowledge of a database, HTTP or DI.
+- `Core` / `Application` — use cases, validators, abstractions of the outside world.
+  Knows nothing about Infrastructure.
+- `Infrastructure.*` — implementations of those abstractions: database, cache, external APIs.
+  Split by technology (`Infrastructure.Postgres`, `Infrastructure.Redis`, ...).
+- `Web` — transport: controllers, middleware, DI composition.
+- `Contracts` — outbound DTOs; may lean on domain types.
 
-Направление проверяется архитектурными тестами, а не соглашением.
+The direction is enforced by architecture tests, not by agreement.
 
-## Структура решения
+## Solution layout
 
 ```
 backend/
-├── Directory.Build.props      # TFM, анализаторы, TreatWarningsAsErrors
-├── Directory.Packages.props   # версии всех пакетов — только здесь
-├── .globalconfig              # уровни правил анализаторов
-├── global.json                # фиксация SDK
-├── tools/                     # скрипты сборки
-├── src/<Продукт>.<Слой>/      # по одному проекту на слой
+├── Directory.Build.props      # TFM, analysers, TreatWarningsAsErrors
+├── Directory.Packages.props   # every package version — here and nowhere else
+├── .globalconfig              # analyser rule severities
+├── global.json                # SDK pinning
+├── tools/                     # build scripts
+├── src/<Product>.<Layer>/     # one project per layer
 └── tests/
-    ├── <Продукт>.UnitTests/
-    ├── <Продукт>.IntegrationTests/
-    └── <Продукт>.ArchitectureTests/
+    ├── <Product>.UnitTests/
+    ├── <Product>.IntegrationTests/
+    └── <Product>.ArchitectureTests/
 ```
 
-## Паттерны домена (обязательные)
+## Domain patterns (mandatory)
 
-1. **Result Pattern.** Ожидаемые бизнес-ошибки возвращаются значением (`Result<T>`,
-   `Result<T, Error>`), исключения — только для исключительных ситуаций: сбой
-   инфраструктуры. Ошибка типизирована и имеет код, а не «одна строка на всё».
-2. **Value Objects вместо примитивов.** Деньги, идентификаторы, рейтинги, адреса —
-   отдельные типы. Валидация живёт в фабрике VO, а не в контроллере и не в сервисе.
-3. **Strongly-typed ID** для идентификаторов агрегатов.
-4. **Фабрики сущностей.** `public static Result<T> Create(...)`; публичных конструкторов
-   «наружу» и сеттеров, ломающих инварианты, нет.
-5. **Связи между агрегатами — по ID.** Навигационных коллекций через границу агрегата нет.
-6. **Timestamps** создания и обновления (UTC) — у каждой сохраняемой сущности.
-7. **Явная валидация входа** на границе сценария, с единым форматом ошибок.
+1. **Result Pattern.** Expected business errors are returned as values (`Result<T>`,
+   `Result<T, Error>`); exceptions are reserved for exceptional situations such as an
+   infrastructure failure. An error is typed and carries a code, not one string for everything.
+2. **Value objects instead of primitives.** Money, identifiers, ratings, addresses are
+   distinct types. Validation lives in the value object's factory, not in a controller or a
+   service.
+3. **Strongly-typed IDs** for aggregate identifiers.
+4. **Entity factories.** `public static Result<T> Create(...)`; there are no public
+   constructors facing outward and no setters that break invariants.
+5. **Aggregates reference each other by ID.** No navigation collections across an aggregate
+   boundary.
+6. **Timestamps** for creation and update (UTC) on every persisted entity.
+7. **Explicit input validation** at the use-case boundary, with a single error shape.
 
-## Что считается ошибкой проектирования
+## What counts as a design mistake
 
-- Анемичная модель и «сервисы на всё», где вся логика собрана в одном классе.
-- Публичные сеттеры у сущностей.
-- Логика в контроллерах и в конфигурациях ORM.
-- Сценарий, знающий о конкретной БД или HTTP-клиенте напрямую.
-- Абстракция, добавленная «на будущее», без второй реализации или теста.
+- An anaemic model and "services that do everything", with the logic collected in one class.
+- Public setters on entities.
+- Logic inside controllers or ORM configurations.
+- A use case that knows a concrete database or HTTP client directly.
+- An abstraction added "for the future" with no second implementation and no test.

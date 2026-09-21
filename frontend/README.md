@@ -1,36 +1,38 @@
-# frontend — раздел React + TypeScript
+# frontend — the React + TypeScript section
 
-Общие принципы клиентской разработки: структура SPA, данные и состояние, UI и доступность,
-качество и определение готовности. Раздел не знает о конкретном продукте.
+General principles of client-side development: SPA structure, data and state, UI and
+accessibility, quality and definition of done. The section knows nothing about a concrete
+product.
 
-## Что здесь
+## What is here
 
-| Путь | Что это | Когда читать |
+| Path | What it is | When to read |
 |---|---|---|
-| `principles/stack-and-structure.md` | Стек, монорепо, слои, направление импортов | Старт приложения, новый модуль, спор о размещении кода |
-| `principles/data-and-state.md` | Серверные данные, клиентское состояние, URL-состояние, формы, API-клиент | Экран с данными, форма, фильтры, интеграция с API |
-| `principles/ui-and-accessibility.md` | Обязательные состояния экрана, WCAG 2.2 AA, семантика | Любой экран и интерактивный компонент |
-| `principles/quality.md` | Линт, типы, тесты, DoD, красные линии | Приёмка работы, спор о зависимости или правиле |
-| `skills/` | Официальные наборы [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills): `react-best-practices` (70 правил производительности React), `composition-patterns`, `web-design-guidelines`, `react-view-transitions`, `writing-guidelines` | Работа с React, UI, текстами интерфейса |
-| `templates/` | Заготовки конфигов (tsconfig, eslint, prettier) | Старт сборки фронтенда |
-| `sources.md` | Официальные наборы скиллов по фронтенду | Поиск официального скилла перед своим |
+| `principles/stack-and-structure.md` | Stack, monorepo, layers, import direction | Starting an app, a new module, an argument about where code goes |
+| `principles/data-and-state.md` | Server data, client state, URL state, forms, API client | A screen with data, a form, filters, API integration |
+| `principles/ui-and-accessibility.md` | Mandatory screen states, WCAG 2.2 AA, semantics | Any screen and any interactive component |
+| `principles/quality.md` | Lint, types, tests, DoD, red lines | Accepting work, an argument about a dependency or a rule |
+| `skills/` | Official [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills) sets: `react-best-practices` (70 React performance rules), `composition-patterns`, `web-design-guidelines`, `react-view-transitions`, `writing-guidelines` | Work on React, UI, interface texts |
+| `templates/` | Config drafts (tsconfig, eslint, prettier) | Starting a frontend build |
+| `sources.md` | Official frontend skill sets | Looking for an official skill before writing one |
 
-Рядом с каждым вендоренным скиллом лежит `SOURCE.md`: репозиторий, путь, ветка или
-коммит, дата получения, лицензия и список нескачанных файлов. Формальные признаки всех
-скиллов раздела проверяет `scripts/verify-library.ps1`.
+Every vendored skill carries a `SOURCE.md` next to it: repository, path, branch or commit,
+retrieval date, licence and skipped files. Formal properties of every skill in the section
+are checked by `scripts/verify-library.ps1`.
 
-## Как развернуть под проект
+## Deploying into a project
 
-1. Скопировать `principles/` в проект и взять за основу `.dsh/AGENTS.md` фронтенда.
-2. Разложить скиллы: `scripts/install-skills.ps1 -Project <путь> -Set shared,frontend`.
-3. Заготовки из `templates/` положить в корень монорепо и подставить свои версии.
-4. Проектную специфику (домены, API, дизайн-система, бюджет бандла) дописать в проект.
+1. Copy `principles/` into the project and use them as the draft of the frontend
+   `.dsh/AGENTS.md`.
+2. Lay the skills out: `scripts/install-skills.ps1 -Project <path> -Set shared,frontend`.
+3. Put the drafts from `templates/` at the monorepo root and fill in real versions.
+4. Add the project specifics (domains, API, design system, bundle budget) to the project.
 
-## Границы раздела
+## Section boundaries
 
-- **Принцип, а не продукт.** Тексты интерфейса, доменные сущности и маршруты принадлежат
-  проекту, а не разделу.
-- **Версии — в проекте.** Таблица стека в разделе задаёт ориентир; точные версии
-  фиксируются в проекте и обновляются отдельной задачей.
-- **Доступность не обсуждается.** WCAG 2.2 AA — входное требование, а не пожелание;
-  исключение оформляет пользователь.
+- **A principle, not a product.** Interface texts, domain entities and routes belong to the
+  project, not to the section.
+- **Versions live in the project.** The stack table in the section sets the direction; exact
+  versions are pinned in the project and updated as a separate change.
+- **Accessibility is not up for debate.** WCAG 2.2 AA is an entry requirement, not a wish;
+  an exception is granted by the user.

@@ -1,46 +1,46 @@
-# Качество и определение готовности
+# Quality and definition of done
 
-## Линт и типы
+## Lint and types
 
-- ESLint (flat config) и `tsc --noEmit` проходят **без ошибок и предупреждений**.
-- Запрещённые приёмы (без обоснования в комментарии): `any`, подавление типов
-  (`@ts-expect-error`, `@ts-ignore`), двойное приведение через `unknown`,
-  дефолтные экспорты (кроме требуемых инструментом), barrel-файлы.
-- **Правило линтера или типов не отключается вместо исправления кода.** Смягчение правила —
-  решение пользователя с причиной и записью в реестр проекта.
-- Git-хук прогоняет линт и типы на изменённых файлах: дефект не доезжает до ревью.
+- ESLint (flat config) and `tsc --noEmit` pass with **no errors and no warnings**.
+- Forbidden without a justifying comment: `any`, type suppression (`@ts-expect-error`,
+  `@ts-ignore`), double casting through `unknown`, default exports (except where a tool
+  requires them), barrel files.
+- **A linter or type rule is not switched off instead of fixing the code.** Relaxing a rule is
+  the user's decision, with a reason and a registry entry in the project.
+- A git hook runs lint and types on the changed files: a defect does not reach review.
 
-## Тесты
+## Tests
 
-| Уровень | Что проверяет |
+| Level | What it checks |
 |---|---|
-| Модульные | Утилиты, редьюсеры, чистые функции, схемы валидации |
-| Компонентные | Поведение компонента через доступные роли и текст (React Testing Library) |
-| Интеграционные | Экран с подменённой сетью (MSW): загрузка, пусто, ошибка, успех |
-| Сквозные | Критический пользовательский путь в браузере (Playwright) |
+| Unit | Utilities, reducers, pure functions, validation schemas |
+| Component | Component behaviour through accessible roles and text (React Testing Library) |
+| Integration | A screen with a substituted network (MSW): loading, empty, error, success |
+| End-to-end | A critical user path in a browser (Playwright) |
 
-- Тесты проверяют **поведение, а не реализацию**: снапшоты разметки и обращения
-  к внутреннему состоянию не используются.
-- Сеть в тестах подменяется на уровне запросов, а не моками модулей.
-- Новый функционал приходит с тестом соответствующего уровня.
+- Tests check **behaviour, not implementation**: markup snapshots and reaching into internal
+  state are out.
+- The network is substituted at the request level, not by mocking modules.
+- New functionality arrives with a test at the matching level.
 
-## Определение готовности
+## Definition of done
 
-1. `typecheck` и `lint` — без ошибок и предупреждений.
-2. Тесты зелёные; новый функционал покрыт тестами нужного уровня.
-3. Сборка проходит, размер бандла в бюджете проекта.
-4. Экран реализует все обязательные состояния и проходит чек-лист доступности.
-5. Состояние, которое должно шариться ссылкой, воспроизводится из URL.
-6. Запрещённых приёмов нет; новые зависимости либо отсутствуют, либо согласованы.
-7. Документация и производные артефакты (сгенерированный клиент, схема стека) обновлены,
-   если менялись версии, структура или контракт.
+1. `typecheck` and `lint` pass with no errors and no warnings.
+2. Tests are green; new functionality is covered at the matching level.
+3. The build passes and the bundle stays inside the project's budget.
+4. The screen implements every mandatory state and passes the accessibility checklist.
+5. State that must be shareable through a link is reproducible from the URL.
+6. No forbidden techniques; new dependencies are either absent or agreed.
+7. Documentation and derived artefacts (the generated client, the stack schema) are updated
+   when versions, structure or a contract changed.
 
-## Красные линии
+## Red lines
 
-- Отключать правило линтера или типов вместо исправления кода.
-- Коммитить сгенерированный клиент, расходящийся с OpenAPI-схемой бэкенда.
-- Дублировать серверные данные в клиентском сторе или локальном состоянии «для удобства».
-- Обходить типы и «временно» ломать направление импортов между фичами.
-- Править сгенерированный код руками.
-- Реализовывать экран без обработки пустого результата и ошибки.
-- Добавлять зависимость без обоснования и проверки лицензии и актуальности версии.
+- Switching off a linter or type rule instead of fixing the code.
+- Committing a generated client that diverges from the backend OpenAPI schema.
+- Duplicating server data into a client store or local state "for convenience".
+- Working around types and "temporarily" breaking the import direction between features.
+- Editing generated code by hand.
+- Implementing a screen without handling the empty result and the error.
+- Adding a dependency without justification and a check of its licence and freshness.

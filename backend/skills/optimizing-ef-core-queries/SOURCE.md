@@ -1,27 +1,27 @@
-# Источник скилла
+# Skill source
 
-- **Репозиторий:** https://github.com/dotnet/skills
-- **Путь скилла в репозитории:** `plugins/dotnet-data/skills/optimizing-ef-core-queries`
-- **Ветка:** `main`
-- **Коммит:** `8bbfe7a4d1c5c0cd42cd04e38031779c75f2dda3` (17.09.2026)
-- **Дата получения:** 21.09.2026
-- **Лицензия:** MIT (файл `LICENSE` в корне репозитория, Copyright (c) .NET Foundation and Contributors)
-- **Способ получения:** `https://raw.githubusercontent.com/dotnet/skills/main/<путь>`
+- **Repository:** https://github.com/dotnet/skills
+- **Skill path in the repository:** `plugins/dotnet-data/skills/optimizing-ef-core-queries`
+- **Branch:** `main`
+- **Commit:** `8bbfe7a4d1c5c0cd42cd04e38031779c75f2dda3` (17.09.2026)
+- **Retrieved:** 21.09.2026
+- **Licence:** MIT (the `LICENSE` file in the repository root, Copyright (c) .NET Foundation and Contributors)
+- **Retrieval method:** `https://raw.githubusercontent.com/dotnet/skills/main/<path>`
 
-## Файлы
+## Files
 
-| Файл | Размер, байт |
+| File | Size, bytes |
 |---|---|
 | `SKILL.md` | 10970 |
 
-## Нескачанные файлы
+## Files not downloaded
 
-Нет. Все файлы скилла — текстовые (Markdown) и скачаны дословно, размер совпадает с источником.
-Бинарных файлов (`.zip`, `.png`, `.dll`, `.exe`) в скилле нет.
+None. All the skill's files are text (Markdown) and were downloaded verbatim, the size matches the source.
+There are no binary files (`.zip`, `.png`, `.dll`, `.exe`) in the skill.
 
-## Примечания
+## Notes
 
-- `description` записан в двойных кавычках, двоеточие внутри значения экранировано кавычками —
-  YAML корректен, правки не требуются. `SKILL.md` не изменялся.
+- The `description` is written in double quotes, and the colon inside the value is escaped by the quotes —
+  the YAML is valid and no edits are needed. `SKILL.md` was not changed.
 
-Локальная копия, автообновления нет: при изменениях у источника обновлять вручную
+Local copy, no auto-update: refresh by hand when the source changes

@@ -1,5 +1,5 @@
 {
-  "description": "Вендоренные официальные скиллы раздела backend. Источник правды о происхождении: что, откуда, когда и под какой лицензией взято. Рядом с каждым скиллом лежит SOURCE.md с той же информацией.",
+  "description": "Vendored official skills of the backend section. The source of truth about provenance: what was taken, from where, when and under which license. Next to each skill there is a SOURCE.md with the same information.",
   "updatedAt": "2026-09-21",
   "sources": [
     {
@@ -12,16 +12,17 @@
       "license": "MIT",
       "holder": ".NET Foundation and Contributors",
       "fetchedAt": "2026-09-21",
-      "method": "web_fetch по raw.githubusercontent.com, сверка размера каждого файла с GitHub API"    },
+      "method": "web_fetch over raw.githubusercontent.com, size of each file verified against the GitHub API"
+    },
     {
       "id": "microsoft-learn-ssms",
-      "repository": "Microsoft Learn — Agent skills в SSMS",
+      "repository": "Microsoft Learn — Agent skills in SSMS",
       "url": "https://learn.microsoft.com/en-us/ssms/github-copilot/agent-skills",
       "ref": null,
       "commit": null,
-      "license": "Microsoft Learn (примеры кода — MIT)",
+      "license": "Microsoft Learn (code samples — MIT)",
       "fetchedAt": "2026-09-21",
-      "method": "ручная адаптация официального примера: структура сохранена, текст на русском"
+      "method": "official Microsoft Learn material: the two official examples are reproduced in the original English; the two compiled skills were written in English for this repository"
     }
   ],
   "skills": [
@@ -29,15 +30,15 @@
     { "name": "optimizing-ef-core-queries", "source": "dotnet-skills", "path": "plugins/dotnet-data/skills/optimizing-ef-core-queries", "files": 1, "deviation": "none" },
     { "name": "create-datadriven-aspnetcore", "source": "dotnet-skills", "path": "plugins/dotnet-data/skills/create-datadriven-aspnetcore", "files": 1, "deviation": "none" },
     { "name": "analyzing-dotnet-performance", "source": "dotnet-skills", "path": "plugins/dotnet-diag/skills/analyzing-dotnet-performance", "files": 8, "deviation": "none" },
-    { "name": "sqlserver-blocking-troubleshooting", "source": "microsoft-learn-ssms", "path": null, "files": 1, "deviation": "текст переведён на русский, структура источника сохранена" },
-    { "name": "sqlserver-query-store-tuning", "source": "microsoft-learn-ssms", "path": null, "files": 1, "deviation": "текст переведён на русский, структура источника сохранена" },
-    { "name": "sqlserver-index-verification", "source": "microsoft-learn-ssms", "path": null, "files": 1, "deviation": "текст переведён на русский, структура источника сохранена" },
-    { "name": "sqlserver-agent-job-failure-triage", "source": "microsoft-learn-ssms", "path": null, "files": 1, "deviation": "текст переведён на русский, структура источника сохранена" }
+    { "name": "sqlserver-blocking-troubleshooting", "source": "microsoft-learn-ssms", "path": null, "files": 1, "deviation": "compiled from the official Microsoft Learn articles; English text prepared for this repository" },
+    { "name": "sqlserver-query-store-tuning", "source": "microsoft-learn-ssms", "path": null, "files": 1, "deviation": "compiled from the official Microsoft Learn articles; English text prepared for this repository" },
+    { "name": "sqlserver-index-verification", "source": "microsoft-learn-ssms", "path": null, "files": 1, "deviation": "official example reproduced in the original English; description and whenToUse written for DSH discovery" },
+    { "name": "sqlserver-agent-job-failure-triage", "source": "microsoft-learn-ssms", "path": null, "files": 1, "deviation": "official example reproduced in the original English; description and whenToUse written for DSH discovery" }
   ],
   "notVendored": {
     "source": "dotnet-skills",
-    "decision": "Не тянем в репозиторий, держим указатели: решение пользователя 2026-09-21",
-    "howTo": "scripts/fetch-sources.ps1 -Source dotnet -> _vendor/dotnet/plugins/<плагин>/skills/<имя>",
+    "decision": "Not pulled into the repository, we keep pointers: user decision 2026-09-21",
+    "howTo": "scripts/fetch-sources.ps1 -Source dotnet -> _vendor/dotnet/plugins/<plugin>/skills/<name>",
     "count": 43,
     "plugins": {
       "dotnet": ["csharp-refactoring", "setup-local-sdk"],
