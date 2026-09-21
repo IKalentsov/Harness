@@ -18,13 +18,11 @@ the project documents its skills expect.
 The single source of truth is the harness base:
 
 - **git:** `https://github.com/IKalentsov/Harness` (`git@github.com:IKalentsov/Harness.git`)
-- **a checkout of it on this machine**, if one already exists. Ask the user where it is rather
-  than guessing: it is usually a sibling of the project you are working in, and the wrong
-  directory means a harness assembled from something else.
 
-Use the existing checkout. If there is none, clone the repository into a temporary directory and
-use that. Read it; never write to it. Below, `<base>` stands for that checkout, and every command
-reaches it through a path relative to your working directory where one exists.
+Clone it and work from that clone. If the user says a copy is already on this machine, use the copy
+they name instead of cloning a second one. Read it; never write to it. Below, `<base>` stands for
+that copy, and every command reaches it through a path relative to your working directory where one
+exists.
 
 **The repository you are working in is a target project, not the base.** The base is only ever
 changed in a session that was explicitly opened on the base, by a person who says so. If you
@@ -69,7 +67,7 @@ is empty or ambiguous, ask which side is being built.
 **2. Lay the skills.** Run the base's script against the target:
 
 ```powershell
-# from the base checkout
+# from inside the base
 pwsh -NoProfile -File .\scripts\install-skills.ps1 -Project <target> -Set shared,backend -Clean
 ```
 

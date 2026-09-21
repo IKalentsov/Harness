@@ -1,6 +1,6 @@
 # Migration log
 
-Date: 2026-09-21. Source: the base's own earlier checkout and the working projects listed below,
+Date: 2026-09-21. Source: an earlier copy of this base and the working projects listed below,
 all read-only — nothing there was changed. Paths in the table are relative to the folder that held
 them, never to a particular machine. Purpose: assemble a reference base from which a project
 harness is deployed.
