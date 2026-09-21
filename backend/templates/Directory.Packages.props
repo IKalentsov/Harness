@@ -1,0 +1,71 @@
+<Project>
+
+  <!--
+    ШАБЛОН. Центральное управление версиями пакетов.
+
+    Версии указываются ТОЛЬКО здесь; в .csproj — <PackageReference Include="..." /> без Version.
+    Набор пакетов ниже — пример: под проект заменяется фактическим, версии пинятся точно
+    (без диапазонов и latest). Обновление версии — отдельное изменение, после release notes.
+  -->
+
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+  </PropertyGroup>
+
+  <ItemGroup Label="Домен и результат">
+    <!-- Result<T> для ожидаемых бизнес-ошибок -->
+    <PackageVersion Include="CSharpFunctionalExtensions" Version="3.7.0" />
+  </ItemGroup>
+
+  <ItemGroup Label="Инфраструктура фреймворка">
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.10" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.10" />
+    <PackageVersion Include="Microsoft.Extensions.Http" Version="10.0.10" />
+    <PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="10.0.10" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.10" />
+    <PackageVersion Include="Microsoft.Extensions.Options" Version="10.0.10" />
+    <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.10" />
+  </ItemGroup>
+
+  <ItemGroup Label="HTTP / OpenAPI">
+    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="10.0.10" />
+    <PackageVersion Include="Microsoft.OpenApi" Version="2.7.5" />
+    <PackageVersion Include="Scalar.AspNetCore" Version="2.16.16" />
+  </ItemGroup>
+
+  <ItemGroup Label="Логирование">
+    <PackageVersion Include="Serilog.AspNetCore" Version="9.0.0" />
+  </ItemGroup>
+
+  <!--
+    Данные: подключать, только если в проекте есть БД.
+    Версии ниже — ориентир на момент фиксации шаблона, а не рекомендация «поставить эти».
+  -->
+  <ItemGroup Label="Данные (пример)">
+    <!--
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="10.0.10" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.10" />
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.10" />
+    <PackageVersion Include="Dapper" Version="2.1.66" />
+    <PackageVersion Include="StackExchange.Redis" Version="2.9.32" />
+    -->
+  </ItemGroup>
+
+  <ItemGroup Label="Анализаторы (версии здесь, подключение в Directory.Build.props)">
+    <PackageVersion Include="Roslynator.Analyzers" Version="4.15.0" />
+    <PackageVersion Include="Meziantou.Analyzer" Version="3.0.134" />
+    <PackageVersion Include="AsyncFixer" Version="2.1.0" />
+    <PackageVersion Include="SonarAnalyzer.CSharp" Version="10.30.0.144632" />
+  </ItemGroup>
+
+  <ItemGroup Label="Тесты">
+    <!-- xUnit v3 запускается через Microsoft.Testing.Platform: Microsoft.NET.Test.Sdk не нужен -->
+    <PackageVersion Include="xunit.v3" Version="4.0.0" />
+    <PackageVersion Include="AwesomeAssertions" Version="9.6.0" />
+    <PackageVersion Include="NSubstitute" Version="6.2.0" />
+    <PackageVersion Include="TngTech.ArchUnitNET" Version="0.13.4" />
+    <PackageVersion Include="TngTech.ArchUnitNET.xUnitV3" Version="0.13.4" />
+  </ItemGroup>
+
+</Project>

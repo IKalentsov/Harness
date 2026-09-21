@@ -1,0 +1,49 @@
+{
+  "description": "Вендоренные официальные скиллы раздела backend. Источник правды о происхождении: что, откуда, когда и под какой лицензией взято. Рядом с каждым скиллом лежит SOURCE.md с той же информацией.",
+  "updatedAt": "2026-09-21",
+  "sources": [
+    {
+      "id": "dotnet-skills",
+      "repository": "dotnet/skills",
+      "url": "https://github.com/dotnet/skills",
+      "ref": "main",
+      "commit": "8bbfe7a4d1c5c0cd42cd04e38031779c75f2dda3",
+      "commitDate": "2026-09-17",
+      "license": "MIT",
+      "holder": ".NET Foundation and Contributors",
+      "fetchedAt": "2026-09-21",
+      "method": "web_fetch по raw.githubusercontent.com, сверка размера каждого файла с GitHub API"    },
+    {
+      "id": "microsoft-learn-ssms",
+      "repository": "Microsoft Learn — Agent skills в SSMS",
+      "url": "https://learn.microsoft.com/en-us/ssms/github-copilot/agent-skills",
+      "ref": null,
+      "commit": null,
+      "license": "Microsoft Learn (примеры кода — MIT)",
+      "fetchedAt": "2026-09-21",
+      "method": "ручная адаптация официального примера: структура сохранена, текст на русском"
+    }
+  ],
+  "skills": [
+    { "name": "dotnet-webapi", "source": "dotnet-skills", "path": "plugins/dotnet-aspnetcore/skills/dotnet-webapi", "files": 1, "deviation": "none" },
+    { "name": "optimizing-ef-core-queries", "source": "dotnet-skills", "path": "plugins/dotnet-data/skills/optimizing-ef-core-queries", "files": 1, "deviation": "none" },
+    { "name": "create-datadriven-aspnetcore", "source": "dotnet-skills", "path": "plugins/dotnet-data/skills/create-datadriven-aspnetcore", "files": 1, "deviation": "none" },
+    { "name": "analyzing-dotnet-performance", "source": "dotnet-skills", "path": "plugins/dotnet-diag/skills/analyzing-dotnet-performance", "files": 8, "deviation": "none" },
+    { "name": "sqlserver-blocking-troubleshooting", "source": "microsoft-learn-ssms", "path": null, "files": 1, "deviation": "текст переведён на русский, структура источника сохранена" },
+    { "name": "sqlserver-query-store-tuning", "source": "microsoft-learn-ssms", "path": null, "files": 1, "deviation": "текст переведён на русский, структура источника сохранена" },
+    { "name": "sqlserver-index-verification", "source": "microsoft-learn-ssms", "path": null, "files": 1, "deviation": "текст переведён на русский, структура источника сохранена" },
+    { "name": "sqlserver-agent-job-failure-triage", "source": "microsoft-learn-ssms", "path": null, "files": 1, "deviation": "текст переведён на русский, структура источника сохранена" }
+  ],
+  "notVendored": {
+    "source": "dotnet-skills",
+    "decision": "Не тянем в репозиторий, держим указатели: решение пользователя 2026-09-21",
+    "howTo": "scripts/fetch-sources.ps1 -Source dotnet -> _vendor/dotnet/plugins/<плагин>/skills/<имя>",
+    "count": 43,
+    "plugins": {
+      "dotnet": ["csharp-refactoring", "setup-local-sdk"],
+      "dotnet-test": ["assertion-quality", "code-testing-agent", "code-testing-extensions", "coverage-analysis", "crap-score", "detect-static-dependencies", "filter-syntax", "find-untested-sources", "generate-testability-wrappers", "grade-tests", "migrate-static-to-wrapper", "mtp-hot-reload", "platform-detection", "run-tests", "scaffold-dotnet-test-project", "test-analysis-extensions", "test-anti-patterns", "test-gap-analysis", "test-smell-detection", "test-tagging", "testability-obstacle", "writing-mstest-tests"],
+      "dotnet-msbuild": ["binlog-failure-analysis", "binlog-generation", "build-parallelism", "build-perf-baseline", "build-perf-diagnostics", "check-bin-obj-clash", "copy-to-output-directory", "directory-build-organization", "eval-performance", "extension-points", "including-generated-files", "incremental-build", "item-management", "msbuild-antipatterns", "msbuild-modernization", "property-patterns", "resolve-project-references", "target-authoring"],
+      "dotnet-nuget": ["convert-to-cpm"]
+    }
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "description": "Вендоренные официальные скиллы раздела frontend. Источник правды о происхождении: что, откуда, когда и под какой лицензией взято. Рядом с каждым скиллом лежит SOURCE.md с той же информацией.",
+  "updatedAt": "2026-09-21",
+  "sources": [
+    {
+      "id": "vercel-agent-skills",
+      "repository": "vercel-labs/agent-skills",
+      "url": "https://github.com/vercel-labs/agent-skills",
+      "ref": "main",
+      "commit": "063bee94c3f4df8453406c830b0a7df0f2860278",
+      "commitDate": "2026-08-28",
+      "license": "MIT",
+      "fetchedAt": "2026-09-21",
+      "method": "web_fetch и curl по raw.githubusercontent.com, сверка размера и git-blob-SHA1 каждого файла с источником"
+    }
+  ],
+  "skills": [
+    {
+      "name": "vercel-react-best-practices",
+      "folder": "react-best-practices",
+      "source": "vercel-agent-skills",
+      "path": "skills/react-best-practices",
+      "files": 76,
+      "deviation": "AGENTS.md (108 КБ, скомпилированная версия тех же правил) не вендорена — дублирует rules/",
+      "note": "frontmatter name отличается от имени папки; DSH берёт имя из frontmatter"
+    },
+    {
+      "name": "vercel-composition-patterns",
+      "folder": "composition-patterns",
+      "source": "vercel-agent-skills",
+      "path": "skills/composition-patterns",
+      "files": 14,
+      "deviation": "AGENTS.md (22 КБ, скомпилированная версия тех же правил) удалён: DSH грузит AGENTS.md как инструкции каталога и дублировал бы контекст"
+    },
+    {
+      "name": "vercel-react-view-transitions",
+      "folder": "react-view-transitions",
+      "source": "vercel-agent-skills",
+      "path": "skills/react-view-transitions",
+      "files": 9,
+      "deviation": "AGENTS.md (скомпилированная версия) не вендорена",
+      "note": "frontmatter name отличается от имени папки"
+    },
+    {
+      "name": "web-design-guidelines",
+      "folder": "web-design-guidelines",
+      "source": "vercel-agent-skills",
+      "path": "skills/web-design-guidelines",
+      "files": 2,
+      "deviation": "none"
+    },
+    {
+      "name": "writing-guidelines",
+      "folder": "writing-guidelines",
+      "source": "vercel-agent-skills",
+      "path": "skills/writing-guidelines",
+      "files": 2,
+      "deviation": "none"
+    }
+  ],
+  "notVendored": {
+    "source": "vercel-agent-skills",
+    "reason": "не применимо к стеку раздела (Vite SPA + React) или относится к платформе Vercel, а не к коду",
+    "skills": [
+      "deploy-to-vercel",
+      "react-native-skills",
+      "vercel-cli-with-tokens",
+      "vercel-optimize"
+    ]
+  }
+}
