@@ -9,7 +9,8 @@
 #   - frontmatter starts with ---, has name and description;
 #   - frontmatter name equals the folder name;
 #   - description / whenToUse do not contain an unquoted colon (breaks YAML);
-#   - every relative Markdown link inside SKILL.md points at an existing file.
+#   - every relative Markdown link inside SKILL.md points at an existing file;
+#   - every skill in .dsh/skills, which is tracked, still equals the section it came from.
 #
 # Exit code: 0 = clean, 1 = problems found.
 # Messages are ASCII on purpose: Windows PowerShell 5.1 reads BOM-less .ps1 as ANSI.
@@ -103,8 +104,48 @@ foreach ($name in $Set) {
     }
 }
 
+# .dsh/skills is the base's own build of the library and it is tracked, so a copy that drifted
+# from its section would be committed silently. Every entry there must equal its source section.
+$dshRoot = Join-Path $base '.dsh\skills'
+$dshChecked = 0
+if (Test-Path -LiteralPath $dshRoot) {
+    foreach ($dir in (Get-ChildItem -LiteralPath $dshRoot -Directory | Sort-Object Name)) {
+        $dshChecked++
+        $source = $null
+        foreach ($name in @('shared', 'backend', 'frontend')) {
+            $candidate = Join-Path $base "$name\skills\$($dir.Name)"
+            if (Test-Path -LiteralPath $candidate) { $source = $candidate; break }
+        }
+        if (-not $source) {
+            $problems += ".dsh/skills/$($dir.Name) : no section provides this skill"
+            continue
+        }
+
+        $installed = @{}
+        foreach ($file in (Get-ChildItem -LiteralPath $dir.FullName -Recurse -File)) {
+            $rel = $file.FullName.Substring($dir.FullName.Length + 1).Replace('\', '/')
+            $installed[$rel] = (Get-FileHash -Algorithm SHA256 $file.FullName).Hash.ToLower()
+        }
+        $origin = @{}
+        foreach ($file in (Get-ChildItem -LiteralPath $source -Recurse -File)) {
+            $rel = $file.FullName.Substring($source.Length + 1).Replace('\', '/')
+            $origin[$rel] = (Get-FileHash -Algorithm SHA256 $file.FullName).Hash.ToLower()
+        }
+
+        foreach ($rel in $origin.Keys) {
+            if (-not $installed.ContainsKey($rel)) { $problems += ".dsh/skills/$($dir.Name) : missing $rel" }
+            elseif ($installed[$rel] -ne $origin[$rel]) { $problems += ".dsh/skills/$($dir.Name) : differs from the section at $rel" }
+        }
+        foreach ($rel in $installed.Keys) {
+            if (-not $origin.ContainsKey($rel)) { $problems += ".dsh/skills/$($dir.Name) : not in the section: $rel" }
+        }
+        Write-Host ("OK  {0,-52} [.dsh copy in step with its section]" -f ".dsh/$($dir.Name)")
+    }
+}
+
 ""
 "Skills checked: $checked."
+if ($dshChecked -gt 0) { ".dsh copies checked against their sections: $dshChecked." }
 if ($problems.Count -gt 0) {
     ""
     "PROBLEMS:"

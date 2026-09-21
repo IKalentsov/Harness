@@ -149,5 +149,7 @@ update a project:
 
 Whether `.dsh/skills` is committed in this project or git-ignored and re-deployed from the base.
 Committing it makes a clone self-contained; ignoring it keeps the project free of copies and
-requires the base to be reachable. The base ignores `.dsh/` **for itself only**, because it is its
-own source. Ask; do not decide silently.
+requires the base to be reachable. The base commits its own `.dsh/` for that first reason: cloning
+the base restores its working harness without running anything. A project can go either way, and
+if it commits them, a re-run shows up as a diff that has to be committed. Ask; do not decide
+silently.

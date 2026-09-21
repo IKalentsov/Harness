@@ -173,3 +173,26 @@ git-ignored by the decision in `d4e1ac1`.
 
 `_vendor/` was removed again after the verification — a stale `_vendor/dotnet` from the earlier
 check had survived the previous cleanup.
+
+## `.dsh/` is tracked again, 2026-09-21
+
+`d4e1ac1` stopped tracking `.dsh/` and the README said the directory was ignored by decision.
+Reversed by the user's decision: the base commits its own build of the library, so cloning it
+restores a working harness without running the installer, and nothing is lost when a local copy
+goes away.
+
+Checked before reversing, because the old ignore line claimed it held "sessions, caches,
+settings": DSH writes nothing machine-local under a project's `.dsh/`. The harness keeps all user
+data under one root, `$DSH_HOME` (`~/.dsh`), and inside a project `dsh-skill-filesystem` reads
+exactly one path, `<projectRoot>/.dsh/skills`. The ignore line was protecting the wrong
+directory — the global home sits outside any repository and cannot be committed by accident.
+
+The cost is a second copy inside the repository, which "one meaning, one place" does not love. It
+is paid for by a check rather than by discipline: `scripts/verify-library.ps1` now compares every
+entry in `.dsh/skills` against the section it came from and fails on a missing, extra or changed
+file, so a section edit that was never re-installed cannot be committed silently. The check was
+tested against a deliberately drifted copy: it named the file and exited 1, and the copy was
+restored from its section afterwards.
+
+If the duplication ever becomes noise, the way back is one line: restore `.dsh/` in `.gitignore`
+and delete the copies from the index. The sections are still the only source of truth.

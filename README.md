@@ -113,14 +113,20 @@ are context commands of the host, `/name` is a user-invoked skill. Read them as 
 not as literals.
 
 **The base's own `.dsh/`.** This repository runs on a hand-picked subset of its own sections
-placed in `.dsh/skills` (7 skills). That directory is a local build, not a source: `.dsh/` is
-git-ignored by decision, and the sections stay the single source of truth. Rebuild it after a
-section changes:
+placed in `.dsh/skills` (7 skills). It is a build, not a source — the sections stay the single
+source of truth — but it is **tracked in git**, so a clone restores a working harness without
+re-running anything and nothing is lost with a local copy. Nothing machine-local lands there:
+DSH keeps sessions, caches and settings under its harness home (`$DSH_HOME`, `~/.dsh`), and
+inside a project it only ever reads `<projectRoot>/.dsh/skills`. Rebuild it after a section
+changes, and commit the result:
 
 ```powershell
 .\scripts\install-skills.ps1 -Project . -Set shared,backend `
   -Only architecture-drift-check,codebase-design,domain-modeling,karpathy-guidelines,research,sqlserver-index-verification,writing-for-agents
 ```
+
+`scripts/verify-library.ps1` compares every copy there against the section it came from, so a
+rebuild that was forgotten fails the check instead of being committed quietly.
 
 **Where provenance lives.** A vendored skill carries `SOURCE.md` next to `SKILL.md`; in the base
 it points at the section manifest `../SOURCES.json` for the per-file hashes. The manifest and
@@ -142,8 +148,9 @@ frontmatter with `name` and `description`, the name matching the folder, unquote
 inside a value, broken relative links. The vendored set in `shared/skills` is additionally
 checked for integrity: `shared\skills\verify-set.cmd` compares SHA-256 against its manifest.
 That manifest lists upstream files only — a `SOURCE.md` next to a skill is this base's own
-provenance record and is skipped by the comparison. Neither script looks at `.dsh/skills`,
-which is a local build of the sections; rebuild it and compare, as above.
+provenance record and is skipped by the comparison. The same script also compares every tracked
+copy in `.dsh/skills` against the section it came from, so drift between a section and the base's
+own build cannot be committed unnoticed.
 
 ## Environment notes
 

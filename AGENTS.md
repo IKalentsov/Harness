@@ -34,6 +34,10 @@
   the base and never writes to it. Changes here happen in a session opened on the base itself,
   with the user saying that is what is being done. On any disagreement between a project and the
   base, the base wins on rules and the project wins on its own facts.
+- **The tracked `.dsh/skills` follows its sections.** The base commits its own build so a clone
+  works immediately, which makes it a second copy that must not drift: changing a skill in a
+  section means re-running `scripts/install-skills.ps1` and committing the copy.
+  `scripts/verify-library.ps1` fails when the two disagree.
 
 ## Skill format
 

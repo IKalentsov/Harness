@@ -1,5 +1,8 @@
-# Local harness state: sessions, caches, settings
-.dsh/
+# The base's own .dsh/ is tracked on purpose: a clone has to restore the local build of this
+# library, that is the skill copies under .dsh/skills, without re-running the installer.
+# It is not machine state: DSH keeps sessions, caches and settings under its harness home
+# ($DSH_HOME, ~/.dsh), and inside a project it only ever reads <projectRoot>/.dsh/skills.
+# scripts/verify-library.ps1 checks every copy there against the section it came from.
 
 # Vendored official skill sets (fetched by scripts/fetch-sources.ps1)
 _vendor/
