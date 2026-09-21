@@ -1,6 +1,10 @@
 # Verifies the vendored skill set in this project against SOURCES.json.
-#   powershell -ExecutionPolicy Bypass -File .dsh/skills/verify-set.ps1
-#   powershell -ExecutionPolicy Bypass -File .dsh/skills/verify-set.ps1 -CheckUpstream
+#   pwsh -NoProfile -File .dsh/skills/verify-set.ps1
+#   pwsh -NoProfile -File .dsh/skills/verify-set.ps1 -CheckUpstream
+#
+# Run it through pwsh 7, or through the verify-set.cmd wrapper, which prefers pwsh and falls back
+# to Windows PowerShell 5.1 with -ExecutionPolicy Bypass. A bare .\verify-set.ps1 is refused in a
+# shell whose execution policy is Restricted, which is what the DSH tool's own shell is.
 #
 # The manifest holds upstream files only. SOURCE.md next to a skill is our provenance record
 # and is skipped by the hash comparison, so it neither has to be in the manifest nor counts

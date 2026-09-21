@@ -55,5 +55,6 @@
   relatively;
 - every vendored skill carries a `SOURCE.md` next to it: repository, path, branch or commit,
   retrieval date, licence, files that were skipped. `SKILL.md` itself is never edited;
-- run `scripts/verify-library.ps1` before handing work over: it checks frontmatter, names,
-  quoting and relative links.
+- run `scripts/verify-library.ps1` before handing work over, through pwsh 7:
+  `pwsh -NoProfile -File scripts\verify-library.ps1`. It checks frontmatter, names, quoting and
+  relative links, and compares the tracked `.dsh/skills` copies against the sections.

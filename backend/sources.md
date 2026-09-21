@@ -48,7 +48,7 @@ A skill's path in the source is `plugins/<plugin>/skills/<name>`.
 **How to fetch.** Download the whole set and copy the directory you need:
 
 ```powershell
-.\scripts\fetch-sources.ps1 -Source dotnet     # -> _vendor/dotnet/plugins/<plugin>/skills/<name>
+pwsh -NoProfile -File .\scripts\fetch-sources.ps1 -Source dotnet   # -> _vendor/dotnet/plugins/<plugin>/skills/<name>
 ```
 
 From there the skill moves into `backend/skills/<name>/` together with its `references/` and

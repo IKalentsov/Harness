@@ -115,7 +115,7 @@ record the npm dependency as a deviation, or vendor `guides/` alone as reference
 say so in its `SOURCE.md`. Until then it stays fetchable:
 
 ```powershell
-.\scripts\fetch-sources.ps1 -Source modern-web   # -> _vendor/modern-web/skills/<name>
+pwsh -NoProfile -File .\scripts\fetch-sources.ps1 -Source modern-web   # -> _vendor/modern-web/skills/<name>
 ```
 
 ### jakubkrehel/skills
@@ -127,8 +127,8 @@ repository rather than the skills.
 **How to fetch.** Download the whole set and copy what you need:
 
 ```powershell
-.\scripts\fetch-sources.ps1 -Source vercel        # -> _vendor/vercel/skills/<name>
-.\scripts\fetch-sources.ps1 -Source better-ui     # -> _vendor/better-ui/skills/<name>
+pwsh -NoProfile -File .\scripts\fetch-sources.ps1 -Source vercel        # -> _vendor/vercel/skills/<name>
+pwsh -NoProfile -File .\scripts\fetch-sources.ps1 -Source better-ui     # -> _vendor/better-ui/skills/<name>
 ```
 
 Then copy the folder into `skills/<name>/`, add a `SOURCE.md` next to it with the repository,

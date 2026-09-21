@@ -1,49 +1,85 @@
 # verify-library.ps1
 # Checks every skill in the reference library: shared/skills, backend/skills, frontend/skills.
+# With -SkillsRoot it checks a deployed project's <root>/.dsh/skills by the same rules, which is
+# what DEPLOY.md step 8 asks for.
 #
-#   .\scripts\verify-library.ps1
-#   .\scripts\verify-library.ps1 -Set frontend
+#   pwsh -NoProfile -File .\scripts\verify-library.ps1
+#   pwsh -NoProfile -File .\scripts\verify-library.ps1 -Set frontend
+#   pwsh -NoProfile -File .\scripts\verify-library.ps1 -SkillsRoot H:\path\to\project\.dsh\skills
 #
-# What it checks (the DSH parser silently skips a skill that fails these):
-#   - <name>/SKILL.md exists;
+# What it checks (DSH drops a skill that fails these, without saying so):
+#   - <name>/SKILL.md exists, and the declared name is kebab-case, which the loader requires;
+#   - SKILL.md does not start with a UTF-8 BOM, which would hide the frontmatter from the loader;
 #   - frontmatter starts with ---, has name and description;
-#   - frontmatter name equals the folder name;
+#   - frontmatter name equals the folder name unless the skill carries a SOURCE.md;
 #   - description / whenToUse do not contain an unquoted colon (breaks YAML);
 #   - every relative Markdown link inside SKILL.md points at an existing file;
-#   - every skill in .dsh/skills, which is tracked, still equals the section it came from.
+#   - no nested SKILL.md, no AGENTS.md or CLAUDE.md inside a bundle, no flat <name>.md at the root;
+#   - in base mode, every skill in the tracked .dsh/skills still equals the section it came from.
 #
 # Exit code: 0 = clean, 1 = problems found.
-# Messages are ASCII on purpose: Windows PowerShell 5.1 reads BOM-less .ps1 as ANSI.
+# Run it through pwsh: the DSH tool's own shell is 5.1 with an execution policy of Restricted,
+# and a bare .\script.ps1 is refused there before it starts.
+# Messages are ASCII on purpose: the 5.1 fallback in verify-set.cmd cannot read BOM-less UTF-8.
 
 [CmdletBinding()]
 param(
     [ValidateSet('shared', 'backend', 'frontend')]
-    [string[]]$Set = @('shared', 'backend', 'frontend')
+    [string[]]$Set = @('shared', 'backend', 'frontend'),
+
+    # A deployed project's skills root, usually <project>\.dsh\skills. Checked instead of the
+    # sections, by the same rules, with the .dsh drift comparison left out.
+    [string]$SkillsRoot
 )
 
 $ErrorActionPreference = 'Stop'
 $base = Split-Path -Parent $PSScriptRoot
 $problems = @()
 $checked = 0
+$targetMode = [bool]$SkillsRoot
 
 # Deliberate placeholder links that appear in skill text as examples, not as resources.
 $intentionalBrokenLinks = @{
-    'shared/wayfinder' = @('link')
+    'wayfinder' = @('link')
 }
 
-foreach ($name in $Set) {
-    $root = Join-Path $base "$name\skills"
-    if (-not (Test-Path -LiteralPath $root)) { continue }
+if ($targetMode) {
+    if (-not (Test-Path -LiteralPath $SkillsRoot)) { throw "no skills root: $SkillsRoot" }
+    $roots = @([pscustomobject]@{ Label = 'target'; Path = (Resolve-Path -LiteralPath $SkillsRoot).Path })
+}
+else {
+    $roots = @(foreach ($name in $Set) {
+        $candidate = Join-Path $base "$name\skills"
+        if (Test-Path -LiteralPath $candidate) { [pscustomobject]@{ Label = $name; Path = $candidate } }
+    })
+}
 
-    foreach ($dir in (Get-ChildItem -LiteralPath $root -Directory | Sort-Object Name)) {
+foreach ($r in $roots) {
+    $flat = @(Get-ChildItem -LiteralPath $r.Path -File -Filter '*.md')
+    if ($flat.Count -gt 0) {
+        $problems += "$($r.Label) : flat .md at the skills root would be read as a skill: " + (($flat | ForEach-Object { $_.Name }) -join ', ')
+    }
+
+    foreach ($dir in (Get-ChildItem -LiteralPath $r.Path -Directory | Sort-Object Name)) {
         $checked++
         $skillFile = Join-Path $dir.FullName 'SKILL.md'
-        $label = "$name/$($dir.Name)"
+        $label = "$($r.Label)/$($dir.Name)"
 
         if (-not (Test-Path -LiteralPath $skillFile)) {
             $problems += "$label : no SKILL.md"
             continue
         }
+
+        # A UTF-8 BOM turns the first line into "\ufeff---", and the loader compares that line byte
+        # for byte: the whole skill is dropped with a "missing YAML frontmatter" warning. Get-Content
+        # strips a BOM, so this has to look at the bytes.
+        try {
+            $head = [System.IO.File]::ReadAllBytes($skillFile)
+            if ($head.Length -ge 3 -and $head[0] -eq 0xEF -and $head[1] -eq 0xBB -and $head[2] -eq 0xBF) {
+                $problems += "$label : SKILL.md starts with a UTF-8 BOM, the loader then drops the skill"
+            }
+        }
+        catch { }
 
         $lines = Get-Content -LiteralPath $skillFile
         if ($lines.Count -lt 3 -or $lines[0].TrimEnd("`r") -ne '---') {
@@ -63,6 +99,14 @@ foreach ($name in $Set) {
 
         if (-not $nameLine) { $problems += "$label : frontmatter has no name" }
         if (-not $descLine) { $problems += "$label : frontmatter has no description" }
+
+        # The loader requires a kebab-case name and drops the whole skill on anything else.
+        if ($nameLine) {
+            $declared = ($nameLine -replace '^name:\s*', '').Trim().Trim('"').Trim("'")
+            if ($declared -notmatch '^[a-z0-9]+(-[a-z0-9]+)*$') {
+                $problems += "$label : name '$declared' is not kebab-case, the loader drops the skill"
+            }
+        }
 
         # A vendored skill keeps the upstream name, which may differ from the folder name
         # (DSH takes the skill name from frontmatter, not from the directory).
@@ -91,12 +135,24 @@ foreach ($name in $Set) {
         foreach ($m in [regex]::Matches($text, '\]\((?!https?:|#|mailto:)([^)]+)\)')) {
             $rel = $m.Groups[1].Value.Split('#')[0].Trim()
             if ($rel.Length -eq 0) { continue }
-            $allowed = $intentionalBrokenLinks[$label]
+            $allowed = $intentionalBrokenLinks[$dir.Name]
             if ($allowed -and ($allowed -contains $rel)) { continue }
             $target = Join-Path $dir.FullName $rel
             if (-not (Test-Path -LiteralPath $target)) {
                 $problems += "$label : broken relative link -> $rel"
             }
+        }
+
+        # Structure the loader and the context budget care about.
+        $nested = @(Get-ChildItem -LiteralPath $dir.FullName -Recurse -File -Filter 'SKILL.md' |
+            Where-Object { $_.DirectoryName -ne $dir.FullName })
+        if ($nested.Count -gt 0) {
+            $problems += "$label : nested SKILL.md, the loader reads one level only"
+        }
+        $stray = @(Get-ChildItem -LiteralPath $dir.FullName -Recurse -File |
+            Where-Object { $_.Name -eq 'AGENTS.md' -or $_.Name -eq 'CLAUDE.md' })
+        if ($stray.Count -gt 0) {
+            $problems += "$label : contains $($stray[0].Name), DSH loads it as directory instructions"
         }
 
         $tag = if ($vendored) { 'vendored' } else { 'own' }
@@ -108,7 +164,7 @@ foreach ($name in $Set) {
 # from its section would be committed silently. Every entry there must equal its source section.
 $dshRoot = Join-Path $base '.dsh\skills'
 $dshChecked = 0
-if (Test-Path -LiteralPath $dshRoot) {
+if (-not $targetMode -and (Test-Path -LiteralPath $dshRoot)) {
     foreach ($dir in (Get-ChildItem -LiteralPath $dshRoot -Directory | Sort-Object Name)) {
         $dshChecked++
         $source = $null
@@ -144,7 +200,7 @@ if (Test-Path -LiteralPath $dshRoot) {
 }
 
 ""
-"Skills checked: $checked."
+if ($targetMode) { "Skills checked in the target root: $checked." } else { "Skills checked: $checked." }
 if ($dshChecked -gt 0) { ".dsh copies checked against their sections: $dshChecked." }
 if ($problems.Count -gt 0) {
     ""

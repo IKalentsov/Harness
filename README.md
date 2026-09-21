@@ -52,11 +52,15 @@ are the same thing by hand.
 
    ```powershell
    # shared + backend only
-   .\scripts\install-skills.ps1 -Project H:\path\to\project -Set shared,backend
+   pwsh -NoProfile -File .\scripts\install-skills.ps1 -Project H:\path\to\project -Set shared,backend
 
    # shared + frontend only
-   .\scripts\install-skills.ps1 -Project H:\path\to\project -Set shared,frontend
+   pwsh -NoProfile -File .\scripts\install-skills.ps1 -Project H:\path\to\project -Set shared,frontend
    ```
+
+   Call it through `pwsh`, not as a bare `.\scripts\install-skills.ps1`: the DSH tool's own shell
+   is Windows PowerShell 5.1 with an execution policy of `Restricted`, so a `.ps1` is refused
+   before it runs. The environment notes below have the details.
 
    The script copies `<name>/SKILL.md` directories into `<project>/.dsh/skills`. The flat
    layout is mandatory: DSH reads exactly one level (`skills/<name>/SKILL.md`) and never
@@ -117,11 +121,13 @@ placed in `.dsh/skills` (7 skills). It is a build, not a source — the sections
 source of truth — but it is **tracked in git**, so a clone restores a working harness without
 re-running anything and nothing is lost with a local copy. Nothing machine-local lands there:
 DSH keeps sessions, caches and settings under its harness home (`$DSH_HOME`, `~/.dsh`), and
-inside a project it only ever reads `<projectRoot>/.dsh/skills`. Rebuild it after a section
-changes, and commit the result:
+inside a project it only ever reads `<projectRoot>/.dsh/skills`, where the project root is the
+nearest `.git` ancestor of the session's working directory, or that directory itself when there is
+no `.git` at all. A harness installed into a subdirectory of a monorepo is therefore never
+discovered. Rebuild this base's own copy after a section changes, and commit the result:
 
 ```powershell
-.\scripts\install-skills.ps1 -Project . -Set shared,backend `
+pwsh -NoProfile -File .\scripts\install-skills.ps1 -Project . -Set shared,backend `
   -Only architecture-drift-check,codebase-design,domain-modeling,karpathy-guidelines,research,sqlserver-index-verification,writing-for-agents
 ```
 
@@ -137,10 +143,10 @@ receives the provenance record, not the checker.
 
 ```powershell
 # every section
-powershell -ExecutionPolicy Bypass -File .\scripts\verify-library.ps1
+pwsh -NoProfile -File .\scripts\verify-library.ps1
 
 # one section
-powershell -ExecutionPolicy Bypass -File .\scripts\verify-library.ps1 -Set frontend
+pwsh -NoProfile -File .\scripts\verify-library.ps1 -Set frontend
 ```
 
 It checks the properties that make DSH skip a skill without a word: a present `SKILL.md`,
@@ -154,10 +160,24 @@ own build cannot be committed unnoticed.
 
 ## Environment notes
 
-- The DSH tool runs commands in **Windows PowerShell 5.1**, not `pwsh` 7: keep inline commands
-  in ASCII, because Cyrillic in command text is mangled before the child process starts.
-- Non-ASCII text belongs in a `.ps1` file written as **UTF-8 with BOM**: PowerShell 5.1 reads
-  a BOM-less `.ps1` as ANSI and turns the text into garbage.
+- **Two PowerShell versions, and the shell depends on how you call it.** The DSH tool runs its own
+  commands in **Windows PowerShell 5.1** (`5.1.26100.9444` here) with an execution policy of
+  `Restricted`, so a bare `.\script.ps1` is refused before it starts. **pwsh 7.6.6** is installed
+  and on `PATH` with `RemoteSigned`, so `pwsh -NoProfile -File <script>` runs a script with none
+  of the 5.1 traps below. `shared/skills/verify-set.cmd` already prefers pwsh and falls back to
+  5.1. Every script invocation written in this base therefore names `pwsh`.
+- **Under 5.1, `$ErrorActionPreference = 'Stop'` plus `2>&1` on a native command that writes to
+  stderr throws.** `git` writes progress to stderr on every push, which is how a push script dies
+  half-way through. pwsh 7 leaves native stderr alone
+  (`$PSNativeCommandUseErrorActionPreference` is `False`). When a 5.1 call to git is unavoidable,
+  drop the `2>&1` or read `$LASTEXITCODE` rather than relying on `Stop`.
+- **Cyrillic is fine in arguments and in command text.** A Cyrillic path survives the tool's shell
+  and a child process of either version, and a project under such a path installs and verifies.
+  An earlier note here claimed the opposite; it was not reproducible.
+- **Non-ASCII inside a `.ps1` still needs UTF-8 with a BOM.** 5.1 reads a BOM-less file as ANSI:
+  a Cyrillic string literal arrives as mojibake and the parser loses the terminator. pwsh 7 reads
+  BOM-less UTF-8 correctly. The scripts keep ASCII messages anyway, so the 5.1 fallback in
+  `verify-set.cmd` still works on a machine without pwsh.
 - Network: `curl.exe` works and is how official sets are fetched (`codeload` + `tar`).
   `git clone` fails inside the sandbox on TLS (`schannel: SEC_E_NO_CREDENTIALS`) and
   `Invoke-WebRequest` fails while receiving the response. The fetcher therefore uses `curl`

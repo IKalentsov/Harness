@@ -67,13 +67,34 @@ is empty or ambiguous, ask which side is being built.
 
 ```powershell
 # from the base checkout
-.\scripts\install-skills.ps1 -Project <target> -Set shared,backend -Clean
+pwsh -NoProfile -File .\scripts\install-skills.ps1 -Project <target> -Set shared,backend -Clean
 ```
+
+Call it through `pwsh`. A bare `.\scripts\install-skills.ps1` is **refused** in the DSH tool's own
+shell, which is Windows PowerShell 5.1 with an execution policy of `Restricted`: the call dies
+before the script starts, and that is not a sign that the script or the base is broken.
 
 `-Clean` replaces the target's `.dsh/skills` wholesale: skills inside a project are consumables,
 never a source of truth, so replacing them is the intended behaviour and the reason re-runs
 converge. Add `-Only a,b,c` only if the user asks for a subset. Preview with `-WhatIfOnly` when
 the target already has a harness, and report what will disappear before it does.
+
+**Install into the root a session will resolve, or nothing is discovered.** DSH walks up from the
+session's working directory to the nearest ancestor containing `.git` and reads
+`<that root>/.dsh/skills`; with no `.git` anywhere it uses the working directory itself. In a
+monorepo the target is therefore the git root, not `backend/` or `apps/web`. A harness written into
+a subdirectory looks exactly like having no skills at all, and the folder containing `.git` is the
+thing to check when a session reports an empty catalog.
+
+**Verify it with the base's own checker**, which takes any skills root:
+
+```powershell
+pwsh -NoProfile -File <base>\scripts\verify-library.ps1 -SkillsRoot <target>\.dsh\skills
+```
+
+It applies the loader's own rules — kebab-case `name`, `description`, one level deep, no UTF-8 BOM
+hiding the frontmatter, nothing DSH would read as directory instructions — and exits non-zero on
+the first problem.
 
 **3. Draft `<target>/.dsh/AGENTS.md`.** Start from the applicable `principles/*.md`, drop what
 does not apply to this project, and add the project's own specifics. Keep the project's facts in
@@ -111,8 +132,8 @@ A later run compares it with the base's current commit and reports what moved in
 `skills/<group>/<name>/`. No skill directory contains an `AGENTS.md` — DSH reads that file as
 directory instructions and would load it into every session. Every skill folder has `SKILL.md`;
 every vendored one has `SOURCE.md`; frontmatter `name` and `description` are present and a colon
-inside a value is quoted. The base's own `scripts/verify-library.ps1` checks these properties for
-the base; for the target, check them yourself or copy the script's logic.
+inside a value is quoted. Run the base's checker rather than eyeballing it:
+`pwsh -NoProfile -File <base>\scripts\verify-library.ps1 -SkillsRoot <target>\.dsh\skills`.
 
 **9. Report** in this shape, and keep it short:
 
