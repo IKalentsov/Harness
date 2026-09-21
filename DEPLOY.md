@@ -17,12 +17,14 @@ the project documents its skills expect.
 
 The single source of truth is the harness base:
 
-- **git:** `https://github.com/IKalentsov/Harness` (`git@github.com:IKalentsov/Harness.git`)
+```sh
+git clone https://github.com/IKalentsov/Harness
+```
 
-Clone it and work from that clone. If the user says a copy is already on this machine, use the copy
-they name instead of cloning a second one. Read it; never write to it. Below, `<base>` stands for
-that copy, and every command reaches it through a path relative to your working directory where one
-exists.
+That is `git@github.com:IKalentsov/Harness.git` over SSH, if keys are already set up. Work from that
+clone. If the user says a copy is already on this machine, use the copy they name instead of cloning
+a second one. Read it; never write to it. Below, `<base>` stands for that copy, and every command
+reaches it through a path relative to your working directory where one exists.
 
 **The repository you are working in is a target project, not the base.** The base is only ever
 changed in a session that was explicitly opened on the base, by a person who says so. If you
