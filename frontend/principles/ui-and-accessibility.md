@@ -35,3 +35,14 @@ arrived, marked as partial.
   manipulation are out.
 - Colours, spacing and radii come from tokens: hard-coded values and `!important` are out.
 - Dark theme and responsiveness are part of the design system, not a separate "later" task.
+
+## Where the recipes are
+
+This file states what the project requires. The how of it is vendored, not written here:
+`better-accessibility` (semantics, focus, forms, hit areas), `better-layout` (grouping, spacing,
+responsive structure), `better-typography`, `better-colors` (measuring a rendered pair),
+`better-ui` (surfaces, icons, motion), `better-writing` (interface copy). `better-interface`
+runs the cross-discipline review and owns the severity ladder.
+
+The section's accessibility bar (WCAG 2.2 AA, the four mandatory screen states) stays here: it
+is a project requirement, and those skills supply the recipes that meet it.

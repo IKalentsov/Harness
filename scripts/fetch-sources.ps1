@@ -23,14 +23,18 @@ $ErrorActionPreference = 'Stop'
 
 # name -> owner/repo
 $repositories = [ordered]@{
-    'dotnet'    = 'dotnet/skills'
-    'postgres'  = 'neondatabase/postgres-skills'
-    'redis'     = 'redis/agent-skills'
-    'mongodb'   = 'mongodb/agent-skills'
-    'supabase'  = 'supabase/agent-skills'
-    'vercel'    = 'vercel-labs/agent-skills'
-    'anthropic' = 'anthropics/skills'
-    'copilot'   = 'github/awesome-copilot'
+    'dotnet'       = 'dotnet/skills'
+    'postgres'     = 'neondatabase/postgres-skills'
+    'redis'        = 'redis/agent-skills'
+    'mongodb'      = 'mongodb/agent-skills'
+    'supabase'     = 'supabase/agent-skills'
+    'vercel'       = 'vercel-labs/agent-skills'
+    'anthropic'    = 'anthropics/skills'
+    'copilot'      = 'github/awesome-copilot'
+    'better-ui'    = 'jakubkrehel/skills'
+    'modern-web'   = 'GoogleChrome/modern-web-guidance'
+    'stop-slop'    = 'hardikpandya/stop-slop'
+    'agents-bp'    = 'DenisSergeevitch/agents-best-practices'
 }
 
 $Source = @($Source | ForEach-Object { $_ -split ',' } | Where-Object { $_ } | ForEach-Object { $_.Trim() } | Select-Object -Unique)

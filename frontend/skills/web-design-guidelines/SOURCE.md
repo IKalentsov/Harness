@@ -24,6 +24,24 @@
 ## Notes
 
 - `SKILL.md` and the frontmatter were not edited; the `name` field matches the directory name.
-- The skill does not keep its rules locally: it instructs the agent to fetch the guide from an external URL (`web-interface-guidelines/command.md`) on every invocation, that is, network access is needed for it to work.
+
+## Deviation: the rules are not vendored
+
+`SKILL.md` keeps no rules locally. On every invocation it sends the agent to
+`https://raw.githubusercontent.com/vercel-labs/web-interface-guidelines/main/command.md` — a
+**different repository** from the one pinned above, and one this skill does not pin.
+
+What that means, plainly:
+
+- the skill needs network access to work at all;
+- the commit above pins the wrapper, not the rules;
+- the rules can change under a project without a single byte here changing.
+
+Mitigation recorded on 2026-09-21, the retrieval date: the live file was fetched and hashed —
+7760 bytes, SHA-256 `5a775e6411f790f518dbc9c1fa7c50a89e6873502d9a3530a6eb223a590bcfe8`. Re-hash
+the URL to learn whether the rules moved.
+
+Vendoring the file was rejected on purpose: `SKILL.md` would have to be edited to read a local
+copy, and vendored text is not edited in this base.
 
 Local copy, no auto-update: refresh by hand when the source changes.

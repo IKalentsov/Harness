@@ -10,8 +10,22 @@
       "commit": "063bee94c3f4df8453406c830b0a7df0f2860278",
       "commitDate": "2026-08-28",
       "license": "MIT",
+      "licenseNote": "no LICENSE file in the repository root; MIT is stated in the README and in the license field of SKILL.md",
       "fetchedAt": "2026-09-21",
       "method": "web_fetch and curl over raw.githubusercontent.com, size and git-blob-SHA1 of each file verified against the source"
+    },
+    {
+      "id": "jakubkrehel-skills",
+      "repository": "jakubkrehel/skills",
+      "url": "https://github.com/jakubkrehel/skills",
+      "ref": "main",
+      "commit": "267330e1adfc66a718fb65fa6918c1f06d0a689e",
+      "commitDate": "2026-08-29",
+      "license": "MIT",
+      "holder": "Copyright (c) 2026 Jakub Krehel",
+      "fetchedAt": "2026-09-21",
+      "method": "repository tarball via scripts/fetch-sources.ps1 -Source better-ui; all 65 files of the tree compared against the git-blob-SHA1 of the commit (0 mismatches, 0 extras, 0 missing), then the 11 skill folders copied into this section unchanged",
+      "why": "the strongest official set for interface quality, and framework-agnostic: typography, colour systems and contrast measurement, layout and spacing, accessibility recipes, motion and visual polish. It closes gaps the section had no material for at all"
     }
   ],
   "skills": [
@@ -47,7 +61,15 @@
       "source": "vercel-agent-skills",
       "path": "skills/web-design-guidelines",
       "files": 2,
-      "deviation": "none"
+      "deviation": "the rules are not vendored: SKILL.md fetches them at run time from vercel-labs/web-interface-guidelines (another repository, unpinned). Network required. Live file hashed 2026-09-21: 7760 bytes, sha256 5a775e6411f790f518dbc9c1fa7c50a89e6873502d9a3530a6eb223a590bcfe8",
+      "runtimeDependency": {
+        "repository": "vercel-labs/web-interface-guidelines",
+        "url": "https://raw.githubusercontent.com/vercel-labs/web-interface-guidelines/main/command.md",
+        "pinned": false,
+        "probedAt": "2026-09-21",
+        "bytes": 7760,
+        "sha256": "5a775e6411f790f518dbc9c1fa7c50a89e6873502d9a3530a6eb223a590bcfe8"
+      }
     },
     {
       "name": "writing-guidelines",
@@ -55,17 +77,159 @@
       "source": "vercel-agent-skills",
       "path": "skills/writing-guidelines",
       "files": 2,
-      "deviation": "none"
+      "deviation": "the rules are not vendored: SKILL.md fetches them at run time from vercel-labs/writing-guidelines (another repository, unpinned). Network required. Live file hashed 2026-09-21: 14228 bytes, sha256 fb638d7821bb4472e4492aedcfb51f2636c7d31d34ff9f01cca5bcdce9b1841f",
+      "runtimeDependency": {
+        "repository": "vercel-labs/writing-guidelines",
+        "url": "https://raw.githubusercontent.com/vercel-labs/writing-guidelines/main/command.md",
+        "pinned": false,
+        "probedAt": "2026-09-21",
+        "bytes": 14228,
+        "sha256": "fb638d7821bb4472e4492aedcfb51f2636c7d31d34ff9f01cca5bcdce9b1841f"
+      }
+    },
+    {
+      "name": "better-interface",
+      "folder": "better-interface",
+      "source": "jakubkrehel-skills",
+      "path": "skills/better-interface",
+      "files": 4,
+      "deviation": "none",
+      "invocation": "model",
+      "note": "the orchestrator: routes to the better-* skills, owns severity, the finding cap and review-format.md"
+    },
+    {
+      "name": "better-accessibility",
+      "folder": "better-accessibility",
+      "source": "jakubkrehel-skills",
+      "path": "skills/better-accessibility",
+      "files": 9,
+      "deviation": "none",
+      "invocation": "model"
+    },
+    {
+      "name": "better-layout",
+      "folder": "better-layout",
+      "source": "jakubkrehel-skills",
+      "path": "skills/better-layout",
+      "files": 5,
+      "deviation": "none",
+      "invocation": "model"
+    },
+    {
+      "name": "better-writing",
+      "folder": "better-writing",
+      "source": "jakubkrehel-skills",
+      "path": "skills/better-writing",
+      "files": 3,
+      "deviation": "none",
+      "invocation": "model"
+    },
+    {
+      "name": "better-typography",
+      "folder": "better-typography",
+      "source": "jakubkrehel-skills",
+      "path": "skills/better-typography",
+      "files": 9,
+      "deviation": "none",
+      "invocation": "model",
+      "note": "css-cheat-sheet.md maps every declaration to its Tailwind equivalent, which matches the stack of the section"
+    },
+    {
+      "name": "better-colors",
+      "folder": "better-colors",
+      "source": "jakubkrehel-skills",
+      "path": "skills/better-colors",
+      "files": 9,
+      "deviation": "none",
+      "invocation": "model"
+    },
+    {
+      "name": "better-ui",
+      "folder": "better-ui",
+      "source": "jakubkrehel-skills",
+      "path": "skills/better-ui",
+      "files": 9,
+      "deviation": "none",
+      "invocation": "model",
+      "note": "owns motion, timing and easing, which the section had no material for"
+    },
+    {
+      "name": "interface-review",
+      "folder": "interface-review",
+      "source": "jakubkrehel-skills",
+      "path": "skills/interface-review",
+      "files": 5,
+      "deviation": "none",
+      "invocation": "user",
+      "note": "change-scoped interface review; hands its findings up to better-interface"
+    },
+    {
+      "name": "variant",
+      "folder": "variant",
+      "source": "jakubkrehel-skills",
+      "path": "skills/variant",
+      "files": 4,
+      "deviation": "none",
+      "invocation": "user",
+      "note": "design exploration; writes throwaway code, so the source keeps it user-invoked"
+    },
+    {
+      "name": "break",
+      "folder": "break",
+      "source": "jakubkrehel-skills",
+      "path": "skills/break",
+      "files": 4,
+      "deviation": "none",
+      "invocation": "user",
+      "note": "stress-tests one component with a throwaway harness page; owns no rules and issues no verdict"
+    },
+    {
+      "name": "explain-interface",
+      "folder": "explain-interface",
+      "source": "jakubkrehel-skills",
+      "path": "skills/explain-interface",
+      "files": 7,
+      "deviation": "none",
+      "invocation": "user",
+      "note": "reads an interface someone else built; treats fetched page content as untrusted input"
     }
   ],
-  "notVendored": {
-    "source": "vercel-agent-skills",
-    "reason": "not applicable to the stack of the section (Vite SPA + React) or relates to the Vercel platform rather than to code",
-    "skills": [
-      "deploy-to-vercel",
-      "react-native-skills",
-      "vercel-cli-with-tokens",
-      "vercel-optimize"
-    ]
-  }
+  "notVendored": [
+    {
+      "source": "vercel-agent-skills",
+      "reason": "not applicable to the stack of the section (Vite SPA + React) or relates to the Vercel platform rather than to code",
+      "skills": [
+        "deploy-to-vercel",
+        "react-native-skills",
+        "vercel-cli-with-tokens",
+        "vercel-optimize"
+      ]
+    },
+    {
+      "source": "GoogleChrome/modern-web-guidance",
+      "url": "https://github.com/GoogleChrome/modern-web-guidance",
+      "license": "Apache-2.0",
+      "commit": "66351a783bf1319a1d832f5544f9700098b1047d",
+      "commitDate": "2026-09-17",
+      "reason": "read, then declined. SKILL.md is 123 lines of wrapper around an npm CLI: every step is npx -y modern-web-guidance@latest search|retrieve, the package is unpinned, network and npm are required at run time, and the skill itself notes npx may fail on Windows (npx.cmd needed). The 144 guides/ files next to it are the data of that npm package, not reference material SKILL.md reads, so vendoring the folder would add 145 files that nothing loads. Kept in scripts/fetch-sources.ps1 as an on-demand source: fetch-sources.ps1 -Source modern-web",
+      "skills": [
+        "modern-web-guidance",
+        "chrome-extensions"
+      ],
+      "reconsideration": "the knowledge itself is worth having. If the CLI dependency is acceptable, either vendor the wrapper and record the npm dependency as a deviation, or vendor guides/ alone as reference material and say so in SOURCE.md"
+    },
+    {
+      "source": "jakubkrehel-skills",
+      "reason": "repository files outside skills/ are not vendored, as in every other set: AGENTS.md, CLAUDE.md, README.md and the plugin manifests describe the source repository, not the skills. No skill of the set was left out",
+      "files": [
+        ".claude-plugin/",
+        ".gitattributes",
+        "AGENTS.md",
+        "CLAUDE.md",
+        "LICENSE",
+        "opencode.json",
+        "README.md"
+      ]
+    }
+  ]
 }

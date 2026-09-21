@@ -12,13 +12,17 @@ product.
 | `principles/data-and-state.md` | Server data, client state, URL state, forms, API client | A screen with data, a form, filters, API integration |
 | `principles/ui-and-accessibility.md` | Mandatory screen states, WCAG 2.2 AA, semantics | Any screen and any interactive component |
 | `principles/quality.md` | Lint, types, tests, DoD, red lines | Accepting work, an argument about a dependency or a rule |
-| `skills/` | Official [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills) sets: `react-best-practices` (70 React performance rules), `composition-patterns`, `web-design-guidelines`, `react-view-transitions`, `writing-guidelines` | Work on React, UI, interface texts |
+| `skills/` | 16 vendored skills in two official sets: [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills) — `react-best-practices` (70 React performance rules), `composition-patterns`, `react-view-transitions`, `web-design-guidelines`, `writing-guidelines`; and [jakubkrehel/skills](https://github.com/jakubkrehel/skills) — `better-interface` with six domain skills (`better-accessibility`, `better-layout`, `better-typography`, `better-colors`, `better-ui`, `better-writing`) and four verb skills (`interface-review`, `variant`, `break`, `explain-interface`) | Work on React, UI, motion, typography, colour, interface copy |
 | `templates/` | Config drafts (tsconfig, eslint, prettier) | Starting a frontend build |
 | `sources.md` | Official frontend skill sets | Looking for an official skill before writing one |
 
 Every vendored skill carries a `SOURCE.md` next to it: repository, path, branch or commit,
 retrieval date, licence and skipped files. Formal properties of every skill in the section
 are checked by `scripts/verify-library.ps1`.
+
+Two skills of the Vercel set (`web-design-guidelines`, `writing-guidelines`) are wrappers that
+fetch their rules at run time from two other repositories; the deviation and the hash of each
+live file are recorded in `sources.md` and in `skills/SOURCES.json`.
 
 ## Deploying into a project
 
