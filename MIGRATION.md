@@ -1,7 +1,9 @@
 # Migration log
 
-Date: 2026-09-21. Source: `H:\CSharp\MeProjects\AIProjects` (read-only — nothing there was
-changed). Purpose: assemble a reference base from which a project harness is deployed.
+Date: 2026-09-21. Source: the base's own earlier checkout and the working projects listed below,
+all read-only — nothing there was changed. Paths in the table are relative to the folder that held
+them, never to a particular machine. Purpose: assemble a reference base from which a project
+harness is deployed.
 
 ## What was migrated
 

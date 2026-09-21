@@ -17,11 +17,14 @@ the project documents its skills expect.
 
 The single source of truth is the harness base:
 
-- **local checkout:** `H:\CSharp\Harnes`
 - **git:** `https://github.com/IKalentsov/Harness` (`git@github.com:IKalentsov/Harness.git`)
+- **a checkout of it on this machine**, if one already exists. Ask the user where it is rather
+  than guessing: it is usually a sibling of the project you are working in, and the wrong
+  directory means a harness assembled from something else.
 
-Use the local checkout when it exists. If it does not, clone the repository into a temporary
-directory and use that. Read it; never write to it.
+Use the existing checkout. If there is none, clone the repository into a temporary directory and
+use that. Read it; never write to it. Below, `<base>` stands for that checkout, and every command
+reaches it through a path relative to your working directory where one exists.
 
 **The repository you are working in is a target project, not the base.** The base is only ever
 changed in a session that was explicitly opened on the base, by a person who says so. If you

@@ -2,8 +2,10 @@
 # Copies skill sets from this reference repository into a project's .dsh/skills.
 # DSH reads exactly one level (<root>/<name>/SKILL.md), so the target layout is flat.
 #
-#   .\scripts\install-skills.ps1 -Project H:\path\to\project -Set shared,backend
-#   .\scripts\install-skills.ps1 -Project H:\path\to\project -Set shared,frontend -Clean
+#   pwsh -NoProfile -File .\scripts\install-skills.ps1 -Project ..\my-project -Set shared,backend
+#   pwsh -NoProfile -File .\scripts\install-skills.ps1 -Project ..\my-project -Set shared,frontend -Clean
+#
+# -Project takes any path, relative to the directory the script is run from.
 #
 # Messages are ASCII on purpose: Windows PowerShell 5.1 reads BOM-less .ps1 as ANSI.
 

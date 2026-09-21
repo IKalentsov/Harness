@@ -52,15 +52,17 @@ are the same thing by hand.
 
    ```powershell
    # shared + backend only
-   pwsh -NoProfile -File .\scripts\install-skills.ps1 -Project H:\path\to\project -Set shared,backend
+   pwsh -NoProfile -File .\scripts\install-skills.ps1 -Project ..\my-project -Set shared,backend
 
    # shared + frontend only
-   pwsh -NoProfile -File .\scripts\install-skills.ps1 -Project H:\path\to\project -Set shared,frontend
+   pwsh -NoProfile -File .\scripts\install-skills.ps1 -Project ..\my-project -Set shared,frontend
    ```
 
-   Call it through `pwsh`, not as a bare `.\scripts\install-skills.ps1`: the DSH tool's own shell
-   is Windows PowerShell 5.1 with an execution policy of `Restricted`, so a `.ps1` is refused
-   before it runs. The environment notes below have the details.
+   `-Project` takes any path, relative to the directory you run from — the base is normally a
+   sibling of the projects it deploys into. Call the script through `pwsh`, not as a bare
+   `.\scripts\install-skills.ps1`: the DSH tool's own shell is Windows PowerShell 5.1 with an
+   execution policy of `Restricted`, so a `.ps1` is refused before it runs. The environment notes
+   below have the details.
 
    The script copies `<name>/SKILL.md` directories into `<project>/.dsh/skills`. The flat
    layout is mandatory: DSH reads exactly one level (`skills/<name>/SKILL.md`) and never

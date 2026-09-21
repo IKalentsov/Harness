@@ -5,7 +5,7 @@
 #
 #   pwsh -NoProfile -File .\scripts\verify-library.ps1
 #   pwsh -NoProfile -File .\scripts\verify-library.ps1 -Set frontend
-#   pwsh -NoProfile -File .\scripts\verify-library.ps1 -SkillsRoot H:\path\to\project\.dsh\skills
+#   pwsh -NoProfile -File .\scripts\verify-library.ps1 -SkillsRoot ..\my-project\.dsh\skills
 #
 # What it checks (DSH drops a skill that fails these, without saying so):
 #   - <name>/SKILL.md exists, and the declared name is kebab-case, which the loader requires;
