@@ -12,6 +12,7 @@
 | Развернуть окружение под React-проект | `frontend/README.md`, `frontend/principles/*` |
 | Добавить или поправить скилл | `shared/README.md`, `sources.md` нужного раздела |
 | Понять, откуда взят официальный скилл | `backend/sources.md`, `frontend/sources.md`, `SOURCE.md` рядом со скиллом |
+| Справочник плагинов DSH | `PLUGINS.md` |
 | Проверить библиотеку целиком | `scripts/verify-library.ps1` |
 
 ## Границы
