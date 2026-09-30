@@ -8,6 +8,7 @@ debugging, writing for agents. The section goes into both a backend and a fronte
 | Path | What it is |
 |---|---|
 | `skills/` | 26 skills: 24 from [mattpocock/skills](https://github.com/mattpocock/skills) + `karpathy-guidelines` + `architecture-drift-check` |
+| `principles/` | Engineering principles that hold in any stack; `skills.md` is how the agent picks one |
 
 Source, version and hashes of the vendored set — `skills/SOURCES.json`.
 Integrity check — `skills/verify-set.cmd` (run it from the `skills` directory).
@@ -55,8 +56,9 @@ The other 12 the model reaches on its own: `architecture-drift-check`, `codebase
 `prototype`, `research`, `resolving-merge-conflicts`, `tdd`, `writing-for-agents`.
 
 The flag is upstream frontmatter and is not edited here. A harness that wants the agent to run
-the pipeline unaided has to say so in the project's own `AGENTS.md` — a project skill or an
-explicit instruction, not a change to a vendored file.
+the pipeline unaided has to say so in the project's own `AGENTS.md` — an instruction that names
+the skill's file by path (`.dsh/skills/<name>/SKILL.md`); the `skill` tool cannot reach a
+user-invoked skill. `principles/skills.md` has the mechanism.
 
 ## What is taken from the section
 

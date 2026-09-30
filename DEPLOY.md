@@ -79,8 +79,11 @@ before the script starts, and that is not a sign that the script or the base is 
 
 `-Clean` replaces the target's `.dsh/skills` wholesale: skills inside a project are consumables,
 never a source of truth, so replacing them is the intended behaviour and the reason re-runs
-converge. Add `-Only a,b,c` only if the user asks for a subset. Preview with `-WhatIfOnly` when
-the target already has a harness, and report what will disappear before it does.
+converge. Add `-Only a,b,c` only if the user asks for a subset, or `-Exclude a,b,c` to drop a
+few by exact folder name — a .NET project with no database and none planned takes the backend
+set without its four SQL Server skills, and `backend/README.md` has that command. A name in
+`-Exclude` that matches no skill is refused, not ignored. Preview with `-WhatIfOnly` when the
+target already has a harness, and report what will disappear before it does.
 
 **Install into the root a session will resolve, or nothing is discovered.** DSH walks up from the
 session's working directory to the nearest ancestor containing `.git` and reads

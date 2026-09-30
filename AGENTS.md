@@ -12,6 +12,7 @@
 | Set up a .NET project harness | `backend/README.md`, `backend/principles/*` |
 | Set up a React project harness | `frontend/README.md`, `frontend/principles/*` |
 | Add or fix a skill | `shared/README.md`, `sources.md` of the section |
+| Make the agent reach for its skills | `shared/README.md` §"Who can invoke what", `shared/principles/skills.md` |
 | Trace where a vendored skill came from | `backend/sources.md`, `frontend/sources.md`, `SOURCE.md` next to the skill |
 | Look up a DSH plugin | `PLUGINS.md` |
 | Check the whole library | `scripts/verify-library.ps1` |

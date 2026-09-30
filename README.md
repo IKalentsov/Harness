@@ -20,6 +20,7 @@ Harnes/
 ├── PLUGINS.md              # DSH plugin reference: name and purpose
 ├── DEPLOY.md               # prompt to paste into a project: adopt this base there
 ├── shared/                 # true for both backend and frontend
+│   ├── principles/         # engineering principles (reference)
 │   ├── skills/             # 26 skills; a vendored one carries SOURCE.md next to SKILL.md
 │   └── README.md
 ├── backend/                # .NET: architecture, data, API, tests, toolchain
@@ -67,6 +68,12 @@ are the same thing by hand.
    The script copies `<name>/SKILL.md` directories into `<project>/.dsh/skills`. The flat
    layout is mandatory: DSH reads exactly one level (`skills/<name>/SKILL.md`) and never
    looks into subfolders such as `skills/backend/...`.
+
+   `-Only a,b,c` keeps a short allow-list and `-Exclude a,b,c` drops a short deny-list, both
+   by exact folder name and both applied after the sets are chosen. `-Exclude` is what a .NET
+   project with no database uses to leave the four SQL Server skills behind — `backend/README.md`
+   has the command. A name that matches no skill in the selected sets is refused rather than
+   ignored.
 3. Use the section's principles as the draft of the project's `.dsh/AGENTS.md`: drop what
    does not apply and add the project's specifics. Principles are an input, not a finished
    project file.
@@ -110,8 +117,20 @@ Two frontmatter keys decide who can reach a skill:
 
 In `shared/skills` **14 of 26 skills are user-invoked** — the whole Matt Pocock pipeline among
 them. The list is in `shared/README.md`. This matters when a project expects the agent to run a
-flow by itself: an agent-first harness gets the 12 model-invoked skills, and the pipeline
-starts when a person types the command.
+flow by itself: an agent-first harness gets the 12 model-invoked skills of that section, and the
+pipeline starts when a person types the command.
+
+Across all three sections:
+
+| Section | Skills | User-invoked | Model-invoked |
+|---|---|---|---|
+| `shared/skills` | 26 | 14 | 12 |
+| `backend/skills` | 8 | 0 | 8 |
+| `frontend/skills` | 16 | 4 | 12 |
+| **total** | **50** | **18** | **32** |
+
+`backend/skills` hides nothing: a `-Set shared,backend` harness hands the model all 8. The 4
+user-invoked frontend skills are listed in `frontend/README.md`.
 
 **Vocabulary of the source.** A vendored skill is not edited, so it speaks the vocabulary of
 the tool it was written for: "the Skill tool" is DSH's `skill` tool, `/clear` and `/compact`

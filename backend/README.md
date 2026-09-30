@@ -14,7 +14,8 @@ from the project.
 | `principles/observability-and-config.md` | Logs, configuration, secrets | Logging, settings, keys |
 | `principles/testing.md` | Test levels, architecture tests, DoD | Writing and accepting tests |
 | `principles/toolchain.md` | Analysers, central package versions, build | Build setup, analyser findings |
-| `skills/` | Database skills: blocking, Query Store, indexes, agent job failure | Working with a real database and its problems |
+| `skills/` | 8 skills in two halves. The .NET half, from [dotnet/skills](https://github.com/dotnet/skills): `dotnet-webapi`, `optimizing-ef-core-queries`, `analyzing-dotnet-performance`, `create-datadriven-aspnetcore` | Working on an endpoint or an integration |
+| | The SQL Server half, from Microsoft Learn: `sqlserver-blocking-troubleshooting`, `sqlserver-query-store-tuning`, `sqlserver-index-verification`, `sqlserver-agent-job-failure-triage` | Working with a real database and its problems |
 | `templates/` | `Directory.Build.props`, `Directory.Packages.props`, `.globalconfig`, `global.json`, `.gitignore` | Starting a backend build |
 | `sources.md` | Official .NET and database skill sets | Looking for an official skill before writing one |
 
@@ -40,3 +41,15 @@ are checked by `scripts/verify-library.ps1`.
   the section.
 - **A database is not assumed.** The data principles apply only when the project has a
   database; "no database, none planned" is a legitimate project state.
+
+  Such a project takes the section without its SQL half — the four .NET skills and nothing
+  else. `-Set shared,backend` always brings all four SQL skills along, so name them in
+  `-Exclude`:
+
+  ```powershell
+  pwsh -NoProfile -File .\scripts\install-skills.ps1 -Project <path> -Set shared,backend -Exclude sqlserver-agent-job-failure-triage,sqlserver-blocking-troubleshooting,sqlserver-index-verification,sqlserver-query-store-tuning
+  ```
+
+  `-Exclude` takes exact folder names, comma-separated, and refuses a name that matches no
+  skill in the selected sections. The rest of the section is unaffected: the SQL skills are
+  the only part of it that presumes a database.

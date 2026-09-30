@@ -4,6 +4,7 @@
 #
 #   pwsh -NoProfile -File .\scripts\install-skills.ps1 -Project ..\my-project -Set shared,backend
 #   pwsh -NoProfile -File .\scripts\install-skills.ps1 -Project ..\my-project -Set shared,frontend -Clean
+#   pwsh -NoProfile -File .\scripts\install-skills.ps1 -Project ..\my-project -Set shared,backend -Exclude sqlserver-agent-job-failure-triage,sqlserver-blocking-troubleshooting,sqlserver-index-verification,sqlserver-query-store-tuning
 #
 # -Project takes any path, relative to the directory the script is run from.
 #
@@ -20,6 +21,9 @@ param(
     # Optional allow-list: copy only these skills (by folder name).
     [string[]]$Only = @(),
 
+    # Optional deny-list: skip these skills (by folder name). Applied after -Only.
+    [string[]]$Exclude = @(),
+
     [switch]$Clean,
 
     [switch]$WhatIfOnly
@@ -32,6 +36,7 @@ $base = Split-Path -Parent $PSScriptRoot
 # invoked with -File, so split each element on commas before validating.
 $Set = @($Set | ForEach-Object { $_ -split ',' } | Where-Object { $_ } | ForEach-Object { $_.Trim() } | Select-Object -Unique)
 $Only = @($Only | ForEach-Object { $_ -split ',' } | Where-Object { $_ } | ForEach-Object { $_.Trim() } | Select-Object -Unique)
+$Exclude = @($Exclude | ForEach-Object { $_ -split ',' } | Where-Object { $_ } | ForEach-Object { $_.Trim() } | Select-Object -Unique)
 
 $known = @('shared', 'backend', 'frontend')
 $unknown = @($Set | Where-Object { $known -notcontains $_ })
@@ -64,11 +69,18 @@ $sources = foreach ($name in $Set) {
     $dir
 }
 
+# A name in -Exclude that matches nothing would leave the skill installed without a word.
+$excluded = @($sources | ForEach-Object { Get-ChildItem -LiteralPath $_ -Directory } | ForEach-Object { $_.Name })
+$unmatched = @($Exclude | Where-Object { $excluded -notcontains $_ })
+if ($unmatched.Count -gt 0) {
+    throw ("-Exclude names no skill in the selected set(s): {0}" -f ($unmatched -join ', '))
+}
+
 $overall = @{}
 foreach ($dir in $sources) {
     $setName = Split-Path -Parent $dir | Split-Path -Leaf
     Get-ChildItem -LiteralPath $dir -Directory | Where-Object {
-        $Only.Count -eq 0 -or $Only -contains $_.Name
+        ($Only.Count -eq 0 -or $Only -contains $_.Name) -and $Exclude -notcontains $_.Name
     } | ForEach-Object {
         $skill = $_.Name
         $dest = Join-Path $target $skill

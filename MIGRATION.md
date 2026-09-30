@@ -75,16 +75,71 @@ are, not a removal list.
 
 ## Open questions
 
-1. Process skills (`task-authoring`, micro-task review, `systematic-debugging`) stripped of
-   roles — do they belong in the base, or only in a project? The invocation finding below is a
-   partial answer: upstream marks its own process skills user-invoked, so the base can hold a
-   process without the model running it unaided.
+1. **Closed 2026-09-30.** Original question: process skills (`task-authoring`, micro-task
+   review, `systematic-debugging`) stripped of roles — do they belong in the base, or only in a
+   project? **They belong in the base.** The invocation finding below answers it: upstream marks
+   its own process skills user-invoked, so the base can hold a process without the model running
+   it unaided, and the risk that motivated the question does not exist. Closed as a decision
+   about the principle; the three named skills stay out for the separate reasons already
+   recorded above.
 2. `frontend/templates/` — to be filled once the first working frontend monorepo exists
    (the file list is in `frontend/templates/README.md`).
 3. `GoogleChrome/modern-web-guidance` — read and declined for now; two ways back are recorded
    in `frontend/skills/SOURCES.json`.
 4. `wizard` (mattpocock) — still excluded (it generates an interactive bash script). Revisit if
    a project wants it.
+
+## Skill invocation pass, 2026-09-30
+
+### `shared/principles/skills.md` added
+
+The rule "true for both stacks → `shared/`" had no material behind it: skill selection does not
+depend on the stack. `backend/principles/` never used the word `skill`, and
+`frontend/principles/` used it once, about UI recipes, not about invocation. `DEPLOY.md` step 3
+requires the project's `AGENTS.md` to be drafted from `principles/*.md`, so the deployer was told
+to write an invocation rule with nothing to draft it from, and a deployed project filled the gap
+with "skills are a possibility, not an obligation" — after which the agent stopped taking them.
+The new section holds the rule and nothing else. It creates `shared/principles/`, which did not
+exist although the section already had `skills/`.
+
+### The pointer now names the mechanism
+
+`shared/README.md` §"Who can invoke what" ended by naming "a project skill or an explicit
+instruction" as the way to make an agent run the pipeline unaided. The first is a dead end: a
+duplicated skill breaks "one meaning, one place", and it does not work either. Replaced with the
+mechanism that does — an instruction naming the skill's file by path
+(`.dsh/skills/<name>/SKILL.md`), because the `skill` tool cannot reach a user-invoked skill —
+plus a pointer to `principles/skills.md`.
+
+### Three documentation divergences, closed
+
+| File | Was | Now |
+|---|---|---|
+| `backend/README.md` "What is here" | The `skills/` row listed the four SQL skills and described the section as "Database skills", silently dropping the four .NET skills. `README.md` described the same section correctly, so the base's own documents disagreed — and `DEPLOY.md` obliges a deployer to read `<section>/README.md` | Two rows: the .NET half with its "When to read", the SQL half with its own |
+| `backend/README.md` §"Section boundaries" | Declared "a database is not assumed" and left it there, while `-Set shared,backend` always installs the four SQL skills and `README.md` called `-Only` an exception. The declared project state had no install path | An install command for it, now via `-Exclude` |
+| `frontend/README.md` | Nothing on invocation at all — no `disable-model-invocation`, `user-invoked` or `/name`. A frontend deployer counted 16 available skills and got 12 in the catalog and 4 behind `/name` | A §"Who can invoke what" naming all four user-invoked (`break`, `variant`, `interface-review`, `explain-interface`) and all twelve model-invoked |
+
+The base `README.md` gained the layout across all three sections — 50 skills, of which 18 are
+user-invoked and 32 model-invoked — and its "an agent-first harness gets the 12 model-invoked
+skills" now says that 12 is `shared/` alone. `AGENTS.md` routes the question "the agent does not
+take its skills" to `shared/README.md` §"Who can invoke what" and `shared/principles/skills.md`.
+Counts were checked against the tree, not copied: `shared` 26 (14/12), `backend` 8 (0/8),
+`frontend` 16 (4/12).
+
+### `install-skills.ps1` gained `-Exclude`
+
+A deny-list by exact folder name, applied beside `-Only` and parsed the same way. It exists for
+the database-free path above: excluding four is the natural operation there, allow-listing thirty
+is not. A name matching no skill in the selected sets is refused rather than ignored, so an
+installation that silently did not shrink is impossible. Documented in `README.md` and
+`DEPLOY.md`, with the working command in `backend/README.md`.
+
+Verified: `-Exclude` with the four SQL names installs 30 of 34 for `shared,backend`; the same
+command without `-Exclude` still installs 34, byte-identical to the original script's output;
+a misspelled name exits 1 with the name in the message. `scripts/verify-library.ps1` ran at exit
+0 before and after: 50 skills checked and 7 `.dsh` copies in step, so the layout and the
+provenance records are untouched. No `SKILL.md` and no frontmatter was edited, `.dsh/skills` was
+not rebuilt, and `.dsh/` is unchanged because no skill file changed.
 
 ## Hardening pass, 2026-09-21
 

@@ -24,6 +24,22 @@ Two skills of the Vercel set (`web-design-guidelines`, `writing-guidelines`) are
 fetch their rules at run time from two other repositories; the deviation and the hash of each
 live file are recorded in `sources.md` and in `skills/SOURCES.json`.
 
+## Who can invoke what
+
+`disable-model-invocation: true` keeps a skill out of the catalog and out of the `skill` tool;
+its only entry point is a person typing `/name`. All four come from
+[jakubkrehel/skills](https://github.com/jakubkrehel/skills), whose verb skills hold a procedure
+rather than knowledge: `break`, `explain-interface`, `interface-review`, `variant`.
+
+The other 12 the model reaches on its own: `better-accessibility`, `better-colors`,
+`better-interface`, `better-layout`, `better-typography`, `better-ui`, `better-writing`,
+`composition-patterns`, `react-best-practices`, `react-view-transitions`, `web-design-guidelines`,
+`writing-guidelines`.
+
+The flag is upstream frontmatter and is not edited here, so a project that wants the agent to
+run one of the four itself needs an instruction naming the skill's file by path — see
+`shared/principles/skills.md`.
+
 ## Deploying into a project
 
 1. Copy `principles/` into the project and use them as the draft of the frontend
